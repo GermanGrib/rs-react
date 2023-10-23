@@ -3,7 +3,7 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended"
-    //    "prettier"
+//    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -11,7 +11,8 @@
       "jsx": true
     },
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
+    "strict": true
   },
   "env": {
     "browser": true,
@@ -28,6 +29,7 @@
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "@typescript-eslint/explicit-function-return-type": "error",
+    "no-implicit-coercion": "error",
     "react-hooks/exhaustive-deps": "warn",
     "comma-dangle": [
       "error",

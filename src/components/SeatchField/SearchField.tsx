@@ -19,7 +19,7 @@ class SearchField extends Component<unknown, SearchFieldState> {
     if (e.target instanceof HTMLInputElement) {
       const newSearchValue = e.target.value;
       this.setState({ searchValue: newSearchValue });
-      if (e.target.value.length === 0) {
+      if (!e.target.value.length) {
         localStorage.setItem('searchValue', '');
       }
     }

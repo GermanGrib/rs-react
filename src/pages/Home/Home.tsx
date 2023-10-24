@@ -1,6 +1,6 @@
 import { Component, ReactElement } from 'react';
 import { Header } from '../../components/Header';
-import { SearchResults } from '../../components/SearchResults';
+import { Catalog } from '../../components/Catalog';
 import styles from './home.module.scss';
 
 class Home extends Component {
@@ -9,7 +9,7 @@ class Home extends Component {
       <>
         <Header />
         <main className={styles.main}>
-          <SearchResults />
+          <Catalog />
         </main>
       </>
     );

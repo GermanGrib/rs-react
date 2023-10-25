@@ -1,9 +1,9 @@
 import { Component, ReactElement } from 'react';
-import { Home } from '../../pages/Home';
+import { Router } from '../../router/Router';
 
 class App extends Component {
   render(): ReactElement {
-    return <Home />;
+    return <Router />;
   }
 }
 

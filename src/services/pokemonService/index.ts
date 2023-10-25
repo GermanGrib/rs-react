@@ -34,7 +34,10 @@ export async function fetchPokemons(): Promise<ICardProps[] | undefined> {
         try {
           const pokemon = await getPokemonById(i);
           if (pokemon) {
-            pokemonsData.push(pokemonDataForCards(pokemon));
+            const editedData = pokemonDataForCards(pokemon);
+            if (editedData) {
+              pokemonsData.push(editedData);
+            }
           }
         } catch (error) {
           throw new Error('Error during fetchPokemons');
@@ -42,5 +45,21 @@ export async function fetchPokemons(): Promise<ICardProps[] | undefined> {
       }
       return pokemonsData;
     }
+  }
+}
+
+export async function getPokemonByName(
+  searchName: string
+): Promise<IPokemonData | void> {
+  try {
+    const response: Response = await fetch(
+      `${MAIN_URL}${POKEMON_SUFFIX}/${searchName}`
+    );
+
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    throw new Error('Can"t getPokemons');
   }
 }

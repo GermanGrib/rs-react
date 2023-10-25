@@ -4,6 +4,7 @@ import { CardsList } from './CardsList';
 import { fetchPokemons, getPokemonByName } from '../../services/pokemonService';
 import { pokemonDataForCards } from '../../Utils';
 import { Loading } from '../Loading';
+import { Header } from '../Header';
 
 class Catalog extends Component {
   state = {
@@ -12,6 +13,10 @@ class Catalog extends Component {
   };
 
   async componentDidMount(): Promise<void> {
+    await this.loadData();
+  }
+
+  async loadData(): Promise<void> {
     const searchValue = localStorage.getItem('searchValue');
     if (searchValue !== null && searchValue.length === 0) {
       try {
@@ -30,22 +35,43 @@ class Catalog extends Component {
       if (editedData !== undefined) {
         this.setState({ cardsData: [editedData], isLoading: false });
       } else {
+        this.setState({ cardsData: [], isLoading: false });
         return;
       }
-    } else {
-      this.setState({ cardsData: [], isLoading: false });
     }
   }
 
+  refreshData = async (): Promise<void> => {
+    await this.loadData();
+  };
+
+  toggleLoading = (isLoading: boolean): void => {
+    this.setState({ isLoading });
+  };
+
   render(): ReactElement {
     if (this.state.isLoading) {
-      return <Loading />;
+      return (
+        <>
+          <Header
+            onSearch={this.refreshData}
+            toggleLoading={this.toggleLoading}
+          />
+          <Loading />;
+        </>
+      );
     }
 
     return (
-      <div className={styles.root}>
-        <CardsList cardsData={this.state.cardsData} />
-      </div>
+      <>
+        <Header
+          onSearch={this.refreshData}
+          toggleLoading={this.toggleLoading}
+        />
+        <div className={styles.root}>
+          <CardsList cardsData={this.state.cardsData} />
+        </div>
+      </>
     );
   }
 }

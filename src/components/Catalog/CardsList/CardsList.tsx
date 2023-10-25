@@ -8,7 +8,6 @@ class CardsList extends Component<{ cardsData: ICardProps[] }> {
   renderCards(): ReactElement {
     const isCardsDataEmpty =
       Array.isArray(this.props.cardsData) && this.props.cardsData.length === 0;
-    console.log(isCardsDataEmpty, this.props.cardsData, 'IS EMPTY?');
     return (
       <>
         {!isCardsDataEmpty &&

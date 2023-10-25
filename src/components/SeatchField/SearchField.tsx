@@ -5,8 +5,13 @@ interface SearchFieldState {
   searchValue: string;
 }
 
-class SearchField extends Component<unknown, SearchFieldState> {
-  constructor(props: unknown) {
+interface SearchFieldProps {
+  onSearch: () => Promise<void>;
+  toggleLoading: (isLoading: boolean) => void;
+}
+
+class SearchField extends Component<SearchFieldProps, SearchFieldState> {
+  constructor(props: SearchFieldProps) {
     super(props);
     const savedSearchValue = localStorage.getItem('searchValue') || '';
 
@@ -21,6 +26,8 @@ class SearchField extends Component<unknown, SearchFieldState> {
       this.setState({ searchValue: newSearchValue });
       if (!e.target.value.length) {
         localStorage.setItem('searchValue', '');
+        this.props.toggleLoading(true);
+        this.props.onSearch();
       }
     }
   };
@@ -29,6 +36,8 @@ class SearchField extends Component<unknown, SearchFieldState> {
     e.preventDefault();
     if (this.state) {
       localStorage.setItem('searchValue', this.state.searchValue);
+      this.props.toggleLoading(true);
+      this.props.onSearch();
     }
   };
 

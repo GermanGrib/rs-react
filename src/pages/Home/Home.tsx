@@ -1,9 +1,16 @@
 import { Component, ReactElement } from 'react';
+
 import { Catalog } from '../../components/Catalog';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorBoundaryBody } from '../../components/ErrorBoundaryBody';
 
 class Home extends Component {
   render(): ReactElement {
-    return <Catalog />;
+    return (
+      <ErrorBoundary fallback={<ErrorBoundaryBody />}>
+        <Catalog />
+      </ErrorBoundary>
+    );
   }
 }
 

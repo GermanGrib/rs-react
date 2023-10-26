@@ -3,11 +3,12 @@
 .root {
   display: flex;
   justify-content: center;
+  width: 45%;
 }
 
 .form {
   position: relative;
-  width: 35%;
+  width: 100%;
   background-color: $accent-color;
   border-radius: $border-radius;
 }

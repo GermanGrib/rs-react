@@ -1,3 +1,9 @@
 .root {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding-top: 1rem;
   height: 10vh;
+  align-items: center;
+  justify-content: center;
 }

@@ -19,8 +19,6 @@ export async function getPokemonById(
   }
 }
 
-localStorage.setItem('currentPage', '1'); //Todo:  replace that localstorage set to somewhere else...
-
 export async function fetchPokemons(): Promise<ICardProps[] | undefined> {
   const pokemonsData: ICardProps[] = [];
   if (localStorage.getItem('currentPage')) {

@@ -13,6 +13,13 @@ class Catalog extends Component {
   };
 
   async componentDidMount(): Promise<void> {
+    if (!localStorage.getItem('currentPage')) {
+      localStorage.setItem('currentPage', '1');
+    }
+
+    if (!localStorage.getItem('searchValue')) {
+      localStorage.setItem('searchValue', '');
+    }
     await this.loadData();
   }
 

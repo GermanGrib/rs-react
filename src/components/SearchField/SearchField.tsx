@@ -34,8 +34,15 @@ class SearchField extends Component<SearchFieldProps, SearchFieldState> {
 
   handleSubmit = (e: SyntheticEvent): void => {
     e.preventDefault();
+    const searchValue = localStorage.getItem('searchValue') as string;
+    const currentInputValue = this.state.searchValue;
+
     if (this.state) {
-      localStorage.setItem('searchValue', this.state.searchValue);
+      if (currentInputValue === searchValue) {
+        return;
+      }
+
+      localStorage.setItem('searchValue', currentInputValue.trim());
       this.props.toggleLoading(true);
       this.props.onSearch();
     }

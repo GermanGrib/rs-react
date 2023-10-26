@@ -13,7 +13,8 @@
   border-radius: $border-radius;
 }
 
-.input, .button {
+.input,
+.button {
   height: 5rem;
   font-family: 'Lato', sans-serif;
   border: 0;
@@ -21,7 +22,7 @@
   font-size: 1.8rem;
 }
 
-.input[type="search"] {
+.input[type='search'] {
   position: relative;
   padding: 0 1.6rem;
   width: 100%;
@@ -48,7 +49,7 @@
 .input:not(:placeholder-shown) {
   border-radius: $border-radius 0 0 $border-radius;
   width: calc(100% - 8rem);
-  
+
   + .button {
     display: block;
   }

@@ -19,7 +19,7 @@ class Header extends Component<IHeaderProps> {
 
   render(): ReactElement {
     if (this.state.isError) {
-      throw Error;
+      throw new Error('RS School Error task');
     }
 
     return (

@@ -14,8 +14,7 @@ class ErrorBoundaryBody extends Component {
             onClick={(): void => window.location.reload()}
             to={paths.Home}
           >
-            Thankfully, we have a frontend developer - just click the button,
-            silly.
+            Thankfully, we have a Frontend developer - just click on me, silly.
           </Link>
         </div>
       </div>

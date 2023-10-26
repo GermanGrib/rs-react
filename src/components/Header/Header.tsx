@@ -13,10 +13,6 @@ class Header extends Component<IHeaderProps> {
     isError: false,
   };
 
-  constructor(props: IHeaderProps) {
-    super(props);
-  }
-
   render(): ReactElement {
     if (this.state.isError) {
       throw new Error('RS School Error task');

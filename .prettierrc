@@ -2,11 +2,22 @@
   "extends": [
     "plugin:prettier/recommended"
   ],
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports"
+  ],
   "endOfLine": "auto",
   "semi": true,
   "singleQuote": true,
   "tabWidth": 2,
   "trailingComma": "es5",
   "printWidth": 80,
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "importOrder": [
+    "^@core/(.*)$",
+    "^@server/(.*)$",
+    "^@ui/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

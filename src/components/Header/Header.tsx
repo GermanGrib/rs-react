@@ -1,7 +1,8 @@
 import { Component, ReactElement } from 'react';
-import styles from './header.module.scss';
-import { SearchField } from '../SearchField';
+
 import { CallErrorBtn } from '../CallErrorBtn';
+import { SearchField } from '../SearchField';
+import styles from './header.module.scss';
 
 interface IHeaderProps {
   onSearch: () => Promise<void>;

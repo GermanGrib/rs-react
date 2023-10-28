@@ -1,7 +1,8 @@
 import { Component, ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { paths } from '../constants';
+
 import { Home } from '../../pages/Home';
+import { paths } from '../constants';
 
 class Router extends Component {
   render(): ReactElement {

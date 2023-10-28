@@ -1,7 +1,8 @@
 import React, { Component, ReactElement } from 'react';
-import styles from './card.module.scss';
-import { StatsField } from './StatsField';
+
 import { ICardProps } from '../../../types/interface';
+import { StatsField } from './StatsField';
+import styles from './card.module.scss';
 
 class Card extends Component<ICardProps> {
   render(): ReactElement {

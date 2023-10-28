@@ -1,4 +1,5 @@
 import { Component, ReactElement, SyntheticEvent } from 'react';
+
 import styles from './searchField.module.scss';
 
 interface SearchFieldState {
@@ -19,18 +20,6 @@ class SearchField extends Component<SearchFieldProps, SearchFieldState> {
       searchValue: savedSearchValue,
     };
   }
-
-  handleInputChange = (e: SyntheticEvent): void => {
-    if (e.target instanceof HTMLInputElement) {
-      const newSearchValue = e.target.value;
-      this.setState({ searchValue: newSearchValue });
-      if (!e.target.value.length) {
-        localStorage.setItem('searchValue', '');
-        this.props.toggleLoading(true);
-        this.props.onSearch();
-      }
-    }
-  };
 
   handleSubmit = (e: SyntheticEvent): void => {
     e.preventDefault();
@@ -61,13 +50,14 @@ class SearchField extends Component<SearchFieldProps, SearchFieldState> {
           </label>
           <input
             className={styles.input}
-            onChange={this.handleInputChange}
+            onChange={(e): void =>
+              this.setState({ searchValue: e.target.value })
+            }
             value={this.state.searchValue}
             id="search"
             type="search"
             placeholder="Search..."
             autoFocus
-            required
           />
           <button className={styles.button} type="submit">
             Search

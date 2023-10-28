@@ -1,4 +1,5 @@
 import { Component, ReactElement } from 'react';
+
 import styles from './loading.module.scss';
 
 class Loading extends Component {

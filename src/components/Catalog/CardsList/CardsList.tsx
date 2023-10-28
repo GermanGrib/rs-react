@@ -1,8 +1,9 @@
 import { Component, ReactElement } from 'react';
-import { Card } from '../Card';
+
 import { ICardProps } from '../../../types/interface';
-import styles from './cardsList.module.scss';
 import { NoInfo } from '../../NoInfo';
+import { Card } from '../Card';
+import styles from './cardsList.module.scss';
 
 class CardsList extends Component<{ cardsData: ICardProps[] }> {
   renderCards(): ReactElement {
@@ -25,7 +26,7 @@ class CardsList extends Component<{ cardsData: ICardProps[] }> {
               </li>
             );
           })}
-        {isCardsDataEmpty && <NoInfo />};
+        {isCardsDataEmpty && <NoInfo />}
       </>
     );
   }

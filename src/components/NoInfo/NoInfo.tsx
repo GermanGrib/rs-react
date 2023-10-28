@@ -1,4 +1,5 @@
 import { Component, ReactElement } from 'react';
+
 import styles from './noInfo.module.scss';
 
 class NoInfo extends Component {

@@ -1,63 +1,47 @@
-import { MAIN_URL, POKEMON_SUFFIX } from './variables';
-import { ICardProps, IPokemonData } from '../../types/interface';
-import { pokemonDataForCards } from '../../Utils';
 import { MAX_CARDS_PER_PAGE } from '../../const';
 
-export async function getPokemonById(
-  id: number = 1
-): Promise<IPokemonData | void> {
-  try {
-    const response: Response = await fetch(
-      `${MAIN_URL}${POKEMON_SUFFIX}/${id}`
-    );
-
-    if (response.ok) {
-      return await response.json();
-    }
-  } catch (error) {
-    throw new Error('Can"t getPokemons');
-  }
+interface IAxiosParams {
+  url: string;
+  options?: {
+    searchString?: string;
+    pageNumber?: number;
+    itemsLimit?: number;
+    searchID?: number;
+  };
 }
 
-export async function fetchPokemons(): Promise<ICardProps[] | undefined> {
-  const pokemonsData: ICardProps[] = [];
-  if (localStorage.getItem('currentPage')) {
-    const currentPage = Number(localStorage.getItem('currentPage'));
+export async function axios<T>({ url, options }: IAxiosParams): Promise<T> {
+  try {
+    if (options) {
+      const { searchString, itemsLimit, searchID } = options;
+      let { pageNumber } = options;
+      let fetchUrl = url;
 
-    if (currentPage) {
-      const startId = (currentPage - 1) * MAX_CARDS_PER_PAGE + 1;
-      const endId = currentPage * MAX_CARDS_PER_PAGE;
-
-      for (let i = startId; i <= endId; i++) {
-        try {
-          const pokemon = await getPokemonById(i);
-          if (pokemon) {
-            const editedData = pokemonDataForCards(pokemon);
-            if (editedData) {
-              pokemonsData.push(editedData);
-            }
-          }
-        } catch (error) {
-          throw new Error('Error during fetchPokemons');
-        }
+      if (pageNumber) {
+        pageNumber *= MAX_CARDS_PER_PAGE - MAX_CARDS_PER_PAGE;
       }
-      return pokemonsData;
-    }
-  }
-}
 
-export async function getPokemonByName(
-  searchName: string
-): Promise<IPokemonData | void> {
-  try {
-    const response: Response = await fetch(
-      `${MAIN_URL}${POKEMON_SUFFIX}/${searchName}`
-    );
+      if (searchString) {
+        fetchUrl += `/${searchString}`;
+      }
 
-    if (response.ok) {
+      if (searchID) {
+        fetchUrl += `/${searchID}`;
+      }
+
+      if (itemsLimit) {
+        fetchUrl += `?limit=${itemsLimit}`;
+      }
+
+      if (pageNumber) {
+        fetchUrl += `&offset=${pageNumber}`;
+      }
+
+      const response = await fetch(fetchUrl);
       return await response.json();
     }
+    return await fetch(url).then((response) => response.json());
   } catch (error) {
-    throw new Error('Can"t getPokemons');
+    throw new Error('During axios');
   }
 }

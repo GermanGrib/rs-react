@@ -1,4 +1,3 @@
-const MAIN_URL = 'https://pokeapi.co/api/v2';
-const POKEMON_SUFFIX = '/pokemon';
+const POKEMON_URL = 'https://pokeapi.co/api/v2/pokemon';
 
-export { MAIN_URL, POKEMON_SUFFIX };
+export { POKEMON_URL };

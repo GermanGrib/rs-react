@@ -1,1 +1,3 @@
-// import Error
+import ErrorBoundary from './ErrorBoundary';
+
+export { ErrorBoundary };

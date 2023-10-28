@@ -1,7 +1,7 @@
 import { Component, ReactElement } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 
-import { ErrorBoundaryBody } from '../components/ErrorBoundaryBody';
+import { ErrorBoundary } from '../components/ErrorBoundary';
+import { ErrorBoundaryBody } from '../components/ErrorBoundary/ErrorBoundaryBody';
 import { Router } from '../router/Router';
 
 class App extends Component {

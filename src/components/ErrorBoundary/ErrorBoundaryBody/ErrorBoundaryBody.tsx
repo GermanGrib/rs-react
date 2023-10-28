@@ -1,7 +1,7 @@
 import { Component, ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 
-import { paths } from '../../router/constants';
+import { paths } from '../../../router/constants';
 import styles from './errorBoundaryBody.module.scss';
 
 class ErrorBoundaryBody extends Component {

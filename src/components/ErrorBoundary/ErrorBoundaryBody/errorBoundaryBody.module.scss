@@ -1,4 +1,4 @@
-@import '../../styles/common';
+@import '../../../styles/common/index';
 
 .root {
   display: flex;
@@ -19,7 +19,7 @@
   border-radius: $border-radius;
   border: 1px solid $primary-dark;
   font-size: 5rem;
-
+  
   @media (max-width: 1000px) {
     padding: 1rem;
     font-size: 2rem;
@@ -41,11 +41,11 @@
   text-decoration: none;
   border: none;
   transition: background-color $transition-set;
-
+  
   &:hover {
     background-color: #57bd84;
   }
-
+  
   @media (max-width: 1000px) {
     font-size: 1.6rem;
     padding: 0.5rem 1.5rem;

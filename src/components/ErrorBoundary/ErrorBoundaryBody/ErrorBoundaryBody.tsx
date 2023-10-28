@@ -1,7 +1,6 @@
 import { Component, ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 
-import { paths } from '../../../router/constants';
 import styles from './errorBoundaryBody.module.scss';
 
 class ErrorBoundaryBody extends Component {
@@ -13,7 +12,7 @@ class ErrorBoundaryBody extends Component {
           <Link
             className={styles.link}
             onClick={(): void => window.location.reload()}
-            to={paths.Home}
+            to="/"
           >
             Thankfully, we have a Frontend developer - just click on me, silly.
           </Link>

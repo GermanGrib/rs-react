@@ -4,7 +4,7 @@ export interface ICardProps {
   weight: string;
   height: string;
   experience: string;
-  id?: string;
+  id?: string | number;
 }
 
 interface ISprites {

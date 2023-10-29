@@ -1,71 +1,59 @@
-import { Component, ReactElement, SyntheticEvent } from 'react';
+import { ReactElement, SyntheticEvent, useState } from 'react';
 
 import styles from './searchField.module.scss';
-
-interface SearchFieldState {
-  searchValue: string;
-}
 
 interface SearchFieldProps {
   onSearch: () => Promise<void>;
   toggleLoading: (isLoading: boolean) => void;
 }
 
-class SearchField extends Component<SearchFieldProps, SearchFieldState> {
-  constructor(props: SearchFieldProps) {
-    super(props);
-    const savedSearchValue = localStorage.getItem('searchValue') || '';
+if (!localStorage.getItem('searchValue')) {
+  localStorage.setItem('searchValue', '');
+}
 
-    this.state = {
-      searchValue: savedSearchValue,
-    };
-  }
+function SearchField({
+  toggleLoading,
+  onSearch,
+}: SearchFieldProps): ReactElement {
+  const savedSearchValue = localStorage.getItem('searchValue') || '';
+  const [searchValue, setSearchValue] = useState(savedSearchValue);
 
-  handleSubmit = (e: SyntheticEvent): void => {
+  function handleSubmit(e: SyntheticEvent): void {
     e.preventDefault();
-    const searchValue = localStorage.getItem('searchValue') as string;
-    const currentInputValue = this.state.searchValue;
+    const localStorageSearchValue = localStorage.getItem('searchValue');
 
-    if (this.state) {
-      if (currentInputValue === searchValue) {
-        return;
-      }
-
-      localStorage.setItem('searchValue', currentInputValue.trim());
-      this.props.toggleLoading(true);
-      this.props.onSearch();
+    if (localStorageSearchValue === searchValue) {
+      return;
     }
-  };
 
-  render(): ReactElement {
-    return (
-      <div className={styles.root}>
-        <form
-          className={styles.form}
-          onSubmit={this.handleSubmit}
-          role="search"
-        >
-          <label className={styles.label} htmlFor="search">
-            Search for stuff
-          </label>
-          <input
-            className={styles.input}
-            onChange={(e): void =>
-              this.setState({ searchValue: e.target.value })
-            }
-            value={this.state.searchValue}
-            id="search"
-            type="search"
-            placeholder="Search..."
-            autoFocus
-          />
-          <button className={styles.button} type="submit">
-            Search
-          </button>
-        </form>
-      </div>
-    );
+    if (localStorageSearchValue !== null) {
+      localStorage.setItem('searchValue', searchValue.trim());
+      toggleLoading(true);
+      onSearch();
+    }
   }
+
+  return (
+    <div className={styles.root}>
+      <form className={styles.form} onSubmit={handleSubmit} role="search">
+        <label className={styles.label} htmlFor="search">
+          Search for stuff
+        </label>
+        <input
+          className={styles.input}
+          onChange={(e): void => setSearchValue(e.target.value)}
+          value={searchValue}
+          id="search"
+          type="search"
+          placeholder="Search..."
+          autoFocus
+        />
+        <button className={styles.button} type="submit">
+          Search
+        </button>
+      </form>
+    </div>
+  );
 }
 
 export default SearchField;

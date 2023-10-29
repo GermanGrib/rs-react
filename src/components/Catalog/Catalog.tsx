@@ -5,6 +5,7 @@ import { MAX_CARDS_PER_PAGE } from '../../const';
 import { axios } from '../../services/pokemonService';
 import { POKEMON_URL } from '../../services/pokemonService/variables';
 import {
+  ICardProps,
   IEachFullPokemonData,
   IPokemonFullResponse,
 } from '../../types/interface';
@@ -15,7 +16,7 @@ import styles from './catalog.module.scss';
 
 class Catalog extends Component {
   state = {
-    cardsData: [],
+    cardsData: [] as ICardProps[] | [],
     isLoading: true,
     pageNumber: 1,
   };

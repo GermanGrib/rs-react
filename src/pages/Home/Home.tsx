@@ -1,11 +1,9 @@
-import { Component, ReactElement } from 'react';
+import { ReactElement } from 'react';
 
 import { Catalog } from '../../components/Catalog';
 
-class Home extends Component {
-  render(): ReactElement {
-    return <Catalog />;
-  }
+function Home(): ReactElement {
+  return <Catalog />;
 }
 
 export default Home;

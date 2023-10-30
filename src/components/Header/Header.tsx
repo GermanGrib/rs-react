@@ -4,12 +4,7 @@ import { CallErrorBtn } from '../CallErrorBtn';
 import { SearchField } from '../SearchField';
 import styles from './header.module.scss';
 
-interface IHeaderProps {
-  onSearch: () => Promise<void>;
-  toggleLoading: (isLoading: boolean) => void;
-}
-
-function Header({ onSearch, toggleLoading }: IHeaderProps): ReactElement {
+function Header(): ReactElement {
   const [isError, setIsError] = useState(false);
 
   if (isError) {
@@ -19,7 +14,7 @@ function Header({ onSearch, toggleLoading }: IHeaderProps): ReactElement {
   return (
     <header className={styles.root}>
       <CallErrorBtn onClick={(): void => setIsError(!isError)} />
-      <SearchField onSearch={onSearch} toggleLoading={toggleLoading} />
+      <SearchField />
     </header>
   );
 }

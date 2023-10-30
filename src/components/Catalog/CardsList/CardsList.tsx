@@ -11,7 +11,6 @@ interface CardsListProps {
 
 function CardsList({ cardsData }: CardsListProps): ReactElement {
   const isCardsDataEmpty = Array.isArray(cardsData) && cardsData.length === 0;
-
   return (
     <ul className={styles.list}>
       {!isCardsDataEmpty &&

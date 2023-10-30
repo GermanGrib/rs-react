@@ -1,24 +1,22 @@
-import { ReactElement, SyntheticEvent, useState } from 'react';
+import { ReactElement, SyntheticEvent, useContext, useState } from 'react';
 
+import { loadData } from '../../Utils';
+import CurrentPageContext from '../../context/PagesProvider';
+import PokemonDataContext from '../../context/PokemonProvider';
 import styles from './searchField.module.scss';
-
-interface SearchFieldProps {
-  onSearch: () => Promise<void>;
-  toggleLoading: (isLoading: boolean) => void;
-}
 
 if (!localStorage.getItem('searchValue')) {
   localStorage.setItem('searchValue', '');
 }
 
-function SearchField({
-  toggleLoading,
-  onSearch,
-}: SearchFieldProps): ReactElement {
+function SearchField(): ReactElement {
+  const { setPokemonData, setIsPokemonLoading } =
+    useContext(PokemonDataContext);
+  const { currentPage } = useContext(CurrentPageContext);
   const savedSearchValue = localStorage.getItem('searchValue') || '';
   const [searchValue, setSearchValue] = useState(savedSearchValue);
 
-  function handleSubmit(e: SyntheticEvent): void {
+  async function handleSubmit(e: SyntheticEvent): Promise<void> {
     e.preventDefault();
     const localStorageSearchValue = localStorage.getItem('searchValue');
 
@@ -26,10 +24,15 @@ function SearchField({
       return;
     }
 
-    if (localStorageSearchValue !== null) {
-      localStorage.setItem('searchValue', searchValue.trim());
-      toggleLoading(true);
-      onSearch();
+    try {
+      setIsPokemonLoading(true);
+      localStorage.setItem('searchValue', searchValue);
+      const pokemonData = await loadData({ pageNumber: currentPage });
+      setPokemonData(pokemonData);
+    } catch {
+      setPokemonData([]);
+    } finally {
+      setIsPokemonLoading(false);
     }
   }
 

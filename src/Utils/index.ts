@@ -1,9 +1,11 @@
+import { MAX_CARDS_PER_PAGE } from '../const';
 import { axios } from '../services/pokemonService';
 import { POKEMON_URL } from '../services/pokemonService/variables';
 import {
   ICardProps,
   IEachFullPokemonData,
   IPokemonData,
+  IPokemonFullResponse,
 } from '../types/interface';
 
 export function pokemonDataForCards(fullData: IPokemonData): ICardProps {
@@ -47,3 +49,42 @@ export async function listDataForCards(
 
   return pokemonsData;
 }
+
+interface LoadDataProps {
+  pageNumber: number;
+}
+
+export const loadData = async ({
+  pageNumber,
+}: LoadDataProps): Promise<ICardProps[]> => {
+  const searchValue = localStorage.getItem('searchValue') || '';
+
+  if (!searchValue && searchValue.length === 0) {
+    try {
+      const response: IPokemonFullResponse = await axios({
+        url: POKEMON_URL,
+        options: {
+          itemsLimit: MAX_CARDS_PER_PAGE,
+          pageNumber,
+        },
+      });
+      const { results } = response;
+      return await listDataForCards(results);
+    } catch {
+      throw new Error('While loading data:');
+    }
+  } else if (searchValue) {
+    try {
+      const data: IEachFullPokemonData = await axios({
+        url: POKEMON_URL,
+        options: {
+          searchString: searchValue,
+        },
+      });
+      return [pokemonDataForCards(data)];
+    } catch {
+      throw new Error('While loading data:');
+    }
+  }
+  return [];
+};

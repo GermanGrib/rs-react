@@ -1,0 +1,32 @@
+import { Component, ReactElement } from 'react';
+
+import styles from './errorBoundaryBody.module.scss';
+
+interface IErrorBoundaryBody {
+  error: Error | null;
+}
+
+class ErrorBoundaryBody extends Component<IErrorBoundaryBody> {
+  render(): ReactElement {
+    return (
+      <div className={styles.root}>
+        <div className={styles.content}>
+          <p>Oh no! You broke everything!</p>
+          <div className={styles.errorMsgContainer}>
+            <h3 className={styles.errorTitle}>Error message</h3>
+            <div className={styles.message}>{this.props.error?.message}</div>
+          </div>
+          <a
+            className={styles.link}
+            onClick={(): void => window.location.reload()}
+            href="/"
+          >
+            Thankfully, we have a Frontend developer - just click on me, silly.
+          </a>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default ErrorBoundaryBody;

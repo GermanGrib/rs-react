@@ -6,12 +6,7 @@ import {
   IPokemonData,
 } from '../types/interface';
 
-export function pokemonDataForCards(
-  fullData: IPokemonData | void
-): ICardProps | void {
-  if (fullData === undefined || fullData === null) {
-    return;
-  }
+export function pokemonDataForCards(fullData: IPokemonData): ICardProps {
   const { name, weight, height, base_experience, id, sprites } = fullData;
 
   return {

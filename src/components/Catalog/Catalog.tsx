@@ -1,4 +1,4 @@
-import { Component, ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 import { listDataForCards, pokemonDataForCards } from '../../Utils';
 import { MAX_CARDS_PER_PAGE } from '../../const';
@@ -14,19 +14,17 @@ import { Loading } from '../Loading';
 import { CardsList } from './CardsList';
 import styles from './catalog.module.scss';
 
-class Catalog extends Component {
-  state = {
-    cardsData: [] as ICardProps[] | [],
-    isLoading: true,
-    pageNumber: 1,
-  };
+function Catalog(): ReactElement {
+  const [cardsData, setCardsData] = useState<ICardProps[] | []>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [pageNumber] = useState(1);
 
-  async componentDidMount(): Promise<void> {
-    await this.loadData();
-  }
+  useEffect(() => {
+    loadData();
+  }, []);
 
-  async loadData(): Promise<void> {
-    const searchValue = localStorage.getItem('searchValue') ?? '';
+  const loadData = async (): Promise<void> => {
+    const searchValue = localStorage.getItem('searchValue') || '';
 
     if (!searchValue && searchValue.length === 0) {
       try {
@@ -34,14 +32,16 @@ class Catalog extends Component {
           url: POKEMON_URL,
           options: {
             itemsLimit: MAX_CARDS_PER_PAGE,
-            pageNumber: this.state.pageNumber,
+            pageNumber,
           },
         });
         const { results } = response;
         const formattedData = await listDataForCards(results);
-        this.setState({ cardsData: formattedData, isLoading: false });
+        setCardsData(formattedData);
+        setIsLoading(false);
       } catch {
-        this.setState({ cardsData: [], isLoading: false });
+        setCardsData([]);
+        setIsLoading(false);
       }
     } else if (searchValue) {
       try {
@@ -52,46 +52,40 @@ class Catalog extends Component {
           },
         });
         const formattedData = pokemonDataForCards(data);
-        this.setState({ cardsData: [formattedData], isLoading: false });
+        setCardsData([formattedData]);
+        setIsLoading(false);
       } catch {
-        this.setState({ cardsData: [], isLoading: false });
+        setCardsData([]);
+        setIsLoading(false);
       }
     }
-  }
-
-  refreshData = async (): Promise<void> => {
-    await this.loadData();
   };
 
-  toggleLoading = (isLoading: boolean): void => {
-    this.setState({ isLoading });
+  const refreshData = async (): Promise<void> => {
+    await loadData();
   };
 
-  render(): ReactElement {
-    if (this.state.isLoading) {
-      return (
-        <>
-          <Header
-            onSearch={this.refreshData}
-            toggleLoading={this.toggleLoading}
-          />
-          <Loading />
-        </>
-      );
-    }
+  const toggleLoading = (isLoading: boolean): void => {
+    setIsLoading(isLoading);
+  };
 
+  if (isLoading) {
     return (
       <>
-        <Header
-          onSearch={this.refreshData}
-          toggleLoading={this.toggleLoading}
-        />
-        <div className={styles.root}>
-          <CardsList cardsData={this.state.cardsData} />
-        </div>
+        <Header onSearch={refreshData} toggleLoading={toggleLoading} />
+        <Loading />
       </>
     );
   }
+
+  return (
+    <>
+      <Header onSearch={refreshData} toggleLoading={toggleLoading} />
+      <div className={styles.root}>
+        <CardsList cardsData={cardsData} />
+      </div>
+    </>
+  );
 }
 
 export default Catalog;

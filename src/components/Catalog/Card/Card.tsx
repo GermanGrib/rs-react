@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 
-import { ICardProps } from '../../../types/interface';
+import { ICard } from '../../../types/interface';
 import { StatsField } from './StatsField';
 import styles from './card.module.scss';
 
-function Card(props: ICardProps): ReactElement {
+function Card(props: ICard): ReactElement {
   const { cardTitle, imgSrc, weight, height, experience } = props;
 
   return (

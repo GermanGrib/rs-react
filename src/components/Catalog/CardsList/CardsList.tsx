@@ -1,12 +1,12 @@
 import { ReactElement } from 'react';
 
-import { ICardProps } from '../../../types/interface';
+import { ICard } from '../../../types/interface';
 import { NoInfo } from '../../NoInfo';
 import { Card } from '../Card';
 import styles from './cardsList.module.scss';
 
 interface CardsListProps {
-  cardsData: ICardProps[];
+  cardsData: ICard[];
 }
 
 function CardsList({ cardsData }: CardsListProps): ReactElement {

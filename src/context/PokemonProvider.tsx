@@ -10,12 +10,12 @@ import {
 } from 'react';
 
 import { loadData } from '../Utils';
-import { ICardProps } from '../types/interface';
+import { ICard } from '../types/interface';
 import CurrentPageContext from './PagesProvider';
 
 interface PokemonContext {
-  pokemonData: ICardProps[] | [];
-  setPokemonData: Dispatch<SetStateAction<ICardProps[] | []>>;
+  pokemonData: ICard[] | [];
+  setPokemonData: Dispatch<SetStateAction<ICard[] | []>>;
   isPokemonLoading: boolean;
   setIsPokemonLoading: Dispatch<SetStateAction<boolean>>;
 }
@@ -37,7 +37,7 @@ export function PokemonProvider({
   children,
 }: PokemonProviderProps): ReactElement {
   const { currentPage } = useContext(CurrentPageContext);
-  const [pokemonData, setPokemonData] = useState<ICardProps[] | []>([]);
+  const [pokemonData, setPokemonData] = useState<ICard[] | []>([]);
   const [isPokemonLoading, setIsPokemonLoading] = useState(true);
 
   useEffect(() => {

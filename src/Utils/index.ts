@@ -2,13 +2,13 @@ import { MAX_CARDS_PER_PAGE } from '../const';
 import { axios } from '../services/pokemonService';
 import { POKEMON_URL } from '../services/pokemonService/variables';
 import {
-  ICardProps,
+  ICard,
   IEachFullPokemonData,
   IPokemonData,
   IPokemonFullResponse,
 } from '../types/interface';
 
-export function pokemonDataForCards(fullData: IPokemonData): ICardProps {
+export function pokemonDataForCards(fullData: IPokemonData): ICard {
   const { name, weight, height, base_experience, id, sprites } = fullData;
 
   return {
@@ -23,8 +23,8 @@ export function pokemonDataForCards(fullData: IPokemonData): ICardProps {
 
 export async function listDataForCards(
   data: { name: string; url: string }[]
-): Promise<ICardProps[]> {
-  const pokemonsData: ICardProps[] = [];
+): Promise<ICard[]> {
+  const pokemonsData: ICard[] = [];
 
   if (Array.isArray(data)) {
     for (let i = 0; i <= data.length; i++) {
@@ -56,7 +56,7 @@ interface LoadDataProps {
 
 export const loadData = async ({
   pageNumber,
-}: LoadDataProps): Promise<ICardProps[]> => {
+}: LoadDataProps): Promise<ICard[]> => {
   const searchValue = localStorage.getItem('searchValue') || '';
 
   if (!searchValue && searchValue.length === 0) {

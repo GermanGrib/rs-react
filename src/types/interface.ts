@@ -1,4 +1,4 @@
-export interface ICardProps {
+export interface ICard {
   cardTitle: string;
   imgSrc: string;
   weight: string;

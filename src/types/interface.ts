@@ -27,18 +27,8 @@ export interface IPokemonFullResponse {
   results: { name: string; url: string }[];
 }
 
-export interface IEachFullPokemonData extends IPokemonData {
-  abilities: unknown;
-  forms: unknown;
-  game_indices: unknown;
-  held_items: unknown;
-  is_default: unknown;
-  location_area_encounters: unknown;
-  moves: unknown;
-  order: unknown;
-  past_abilities: unknown;
-  past_types: unknown;
-  species: unknown;
-  stats: unknown;
-  types: unknown;
+export interface FetchData {
+  page: number;
+  setIsPokemonLoading: (value: boolean) => void;
+  setPokemonData: (value: ICard[]) => void;
 }

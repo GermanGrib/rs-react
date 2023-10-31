@@ -1,5 +1,3 @@
-import { MAX_CARDS_PER_PAGE } from '../../const';
-
 interface IAxiosParams {
   url: string;
   options?: {
@@ -14,11 +12,11 @@ export async function axios<T>({ url, options }: IAxiosParams): Promise<T> {
   try {
     if (options) {
       const { searchString, itemsLimit, searchID } = options;
-      let { pageNumber } = options;
+      const { pageNumber } = options;
       let fetchUrl = url;
 
       if (pageNumber) {
-        pageNumber *= MAX_CARDS_PER_PAGE - MAX_CARDS_PER_PAGE;
+        fetchUrl += `?limit=${itemsLimit}&offset=${pageNumber}`;
       }
 
       if (searchString) {
@@ -27,14 +25,6 @@ export async function axios<T>({ url, options }: IAxiosParams): Promise<T> {
 
       if (searchID) {
         fetchUrl += `/${searchID}`;
-      }
-
-      if (itemsLimit) {
-        fetchUrl += `?limit=${itemsLimit}`;
-      }
-
-      if (pageNumber) {
-        fetchUrl += `&offset=${pageNumber}`;
       }
 
       const response = await fetch(fetchUrl);

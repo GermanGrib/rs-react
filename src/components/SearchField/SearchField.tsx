@@ -1,7 +1,7 @@
 import { ReactElement, SyntheticEvent, useContext, useState } from 'react';
 
 import { loadData } from '../../Utils';
-import CurrentPageContext from '../../context/PagesProvider';
+// import PageContext from '../../context/PagesProvider';
 import PokemonDataContext from '../../context/PokemonProvider';
 import styles from './searchField.module.scss';
 
@@ -12,7 +12,7 @@ if (!localStorage.getItem('searchValue')) {
 function SearchField(): ReactElement {
   const { setPokemonData, setIsPokemonLoading } =
     useContext(PokemonDataContext);
-  const { currentPage } = useContext(CurrentPageContext);
+  const currentPage = Number(sessionStorage.getItem('currentPage'));
   const savedSearchValue = localStorage.getItem('searchValue') || '';
   const [searchValue, setSearchValue] = useState(savedSearchValue);
 

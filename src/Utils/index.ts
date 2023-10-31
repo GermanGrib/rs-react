@@ -2,11 +2,19 @@ import { MAX_CARDS_PER_PAGE } from '../const';
 import { axios } from '../services/pokemonService';
 import { POKEMON_URL } from '../services/pokemonService/variables';
 import {
+  FetchData,
   ICard,
-  IEachFullPokemonData,
   IPokemonData,
   IPokemonFullResponse,
 } from '../types/interface';
+
+if (!sessionStorage.getItem('max-pages')) {
+  sessionStorage.setItem('max-pages', String(MAX_CARDS_PER_PAGE));
+}
+
+if (!sessionStorage.getItem('currentPage')) {
+  sessionStorage.setItem('currentPage', '1');
+}
 
 export function pokemonDataForCards(fullData: IPokemonData): ICard {
   const { name, weight, height, base_experience, id, sprites } = fullData;
@@ -32,7 +40,7 @@ export async function listDataForCards(
         break;
       }
 
-      const pokemon: IEachFullPokemonData = await axios({
+      const pokemon: IPokemonData = await axios({
         url: POKEMON_URL,
         options: {
           searchString: data[i].name,
@@ -58,13 +66,14 @@ export const loadData = async ({
   pageNumber,
 }: LoadDataProps): Promise<ICard[]> => {
   const searchValue = localStorage.getItem('searchValue') || '';
+  const MAX_CARDS_PER_PAGE = sessionStorage.getItem('max-pages');
 
   if (!searchValue && searchValue.length === 0) {
     try {
       const response: IPokemonFullResponse = await axios({
         url: POKEMON_URL,
         options: {
-          itemsLimit: MAX_CARDS_PER_PAGE,
+          itemsLimit: Number(MAX_CARDS_PER_PAGE),
           pageNumber,
         },
       });
@@ -75,7 +84,7 @@ export const loadData = async ({
     }
   } else if (searchValue) {
     try {
-      const data: IEachFullPokemonData = await axios({
+      const data: IPokemonData = await axios({
         url: POKEMON_URL,
         options: {
           searchString: searchValue,
@@ -88,3 +97,20 @@ export const loadData = async ({
   }
   return [];
 };
+
+export async function fetchData({
+  page = 1,
+  setIsPokemonLoading,
+  setPokemonData,
+}: FetchData): Promise<void> {
+  try {
+    setIsPokemonLoading(true);
+    const data = await loadData({ pageNumber: page });
+    setPokemonData(data);
+    sessionStorage.setItem('currentPage', String(page));
+  } catch {
+    return;
+  } finally {
+    setIsPokemonLoading(false);
+  }
+}

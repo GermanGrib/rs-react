@@ -4,14 +4,12 @@ import {
   ReactNode,
   SetStateAction,
   createContext,
-  useContext,
   useEffect,
   useState,
 } from 'react';
 
 import { loadData } from '../Utils';
 import { ICard } from '../types/interface';
-import CurrentPageContext from './PagesProvider';
 
 interface PokemonContext {
   pokemonData: ICard[] | [];
@@ -36,7 +34,7 @@ interface PokemonProviderProps {
 export function PokemonProvider({
   children,
 }: PokemonProviderProps): ReactElement {
-  const { currentPage } = useContext(CurrentPageContext);
+  const currentPage = Number(sessionStorage.getItem('currentPage'));
   const [pokemonData, setPokemonData] = useState<ICard[] | []>([]);
   const [isPokemonLoading, setIsPokemonLoading] = useState(true);
 

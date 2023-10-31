@@ -1,0 +1,26 @@
+@import '../../styles/common';
+
+.container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  color: $primary-light;
+  font-size: 2rem;
+  transition: opacity $transition-set;
+  
+  & div {
+    pointer-events: none;
+    user-select: none;
+  }
+  
+  & button {
+    cursor: pointer;
+  }
+  
+  &.disable {
+    user-select: none;
+    pointer-events: none;
+    opacity: .7;
+  }
+}

@@ -20,6 +20,10 @@ export interface IPokemonData {
   sprites: ISprites;
 }
 
+export interface DetailedCardData extends IPokemonData {
+  types: { type: { name: string } }[];
+}
+
 export interface IPokemonFullResponse {
   count: number;
   next: null | string;

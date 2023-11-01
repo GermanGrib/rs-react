@@ -1,14 +1,16 @@
 import { ReactElement } from 'react';
+import { Link } from 'react-router-dom';
 
+import { paths } from '../../../router/const';
 import { ICard } from '../../../types/interface';
 import { StatsField } from './StatsField';
 import styles from './card.module.scss';
 
 function Card(props: ICard): ReactElement {
-  const { cardTitle, imgSrc, weight, height, experience } = props;
+  const { cardTitle, imgSrc, weight, height, experience, id } = props;
 
   return (
-    <article className={styles.profile}>
+    <Link to={`${paths.home}${id}`} className={styles.profile}>
       <div className={styles.profileImage}>
         <img className={styles.img} src={imgSrc} alt="card image" />
       </div>
@@ -19,7 +21,7 @@ function Card(props: ICard): ReactElement {
         <StatsField statsTitle={'Height'} statsValue={height} />
         <StatsField statsTitle={'Base Exp'} statsValue={experience} />
       </div>
-    </article>
+    </Link>
   );
 }
 

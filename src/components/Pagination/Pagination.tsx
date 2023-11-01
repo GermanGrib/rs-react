@@ -8,7 +8,11 @@ import { ChangePageBtn } from './ChangePageBtn';
 import { PagesCountOptions } from './PagesCountOptions';
 import styles from './pagination.module.scss';
 
-function Pagination(): ReactElement {
+interface PaginationProps {
+  isLocSearchValueEpmty: boolean;
+}
+
+function Pagination({ isLocSearchValueEpmty }: PaginationProps): ReactElement {
   const [page, setPage] = useState(1);
   const { setPokemonData, isPokemonLoading, setIsPokemonLoading } =
     useContext(PokemonDataContext);
@@ -18,18 +22,17 @@ function Pagination(): ReactElement {
   const totalPages =
     totalItems && limit ? Math.ceil(Number(totalItems) / Number(limit)) : '';
 
-  // const showPage = searchOffset ? Number(searchOffset) + 1 : page;
-
   async function onChangePageBtnClick(isPrevious: boolean): Promise<void> {
     const updatedPage = isPrevious ? page - 1 : page + 1;
+    const offset = (updatedPage - 1) * Number(limit);
     setPage(updatedPage);
     try {
       await fetchData({
-        offset: updatedPage - 1,
+        offset: offset,
         setPokemonData: setPokemonData,
         setIsPokemonLoading: setIsPokemonLoading,
       });
-      const options = `?limit=${limit}&offset=${updatedPage - 1}`;
+      const options = `?limit=${limit}&offset=${offset}`;
       setSearchParams(options);
     } catch {
       throw new Error('During click on change page btn');
@@ -43,25 +46,29 @@ function Pagination(): ReactElement {
   }
 
   return (
-    <div
-      className={`${styles.container} ${
-        isPokemonLoading ? styles.disable : null
-      }`}
-    >
-      <PagesCountOptions onChange={onChangePagesCountOptions} />
-      <ChangePageBtn
-        currentPage={page}
-        onClick={(): Promise<void> => onChangePageBtnClick(true)}
-        isPrevious
-      />
-      <div>{page}</div>
-      <ChangePageBtn
-        currentPage={page}
-        onClick={(): Promise<void> => onChangePageBtnClick(false)}
-        isPrevious={false}
-      />
-      <div>Total pages: {totalPages}</div>
-    </div>
+    <>
+      {isLocSearchValueEpmty && (
+        <div
+          className={`${styles.container} ${
+            isPokemonLoading ? styles.disable : ''
+          }`}
+        >
+          <PagesCountOptions onChange={onChangePagesCountOptions} />
+          <ChangePageBtn
+            currentPage={page}
+            onClick={(): Promise<void> => onChangePageBtnClick(true)}
+            isPrevious
+          />
+          <div>{page}</div>
+          <ChangePageBtn
+            currentPage={page}
+            onClick={(): Promise<void> => onChangePageBtnClick(false)}
+            isPrevious={false}
+          />
+          <div>Total pages: {totalPages}</div>
+        </div>
+      )}
+    </>
   );
 }
 

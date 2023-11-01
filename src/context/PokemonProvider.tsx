@@ -10,7 +10,6 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 import { loadData } from '../Utils';
-import { locCurrentPage } from '../const';
 import { ICard, QueryOptions } from '../types/interface';
 
 interface PokemonContext {
@@ -36,7 +35,6 @@ interface PokemonProviderProps {
 export function PokemonProvider({
   children,
 }: PokemonProviderProps): ReactElement {
-  const currentPage = Number(localStorage.getItem(locCurrentPage));
   const [pokemonData, setPokemonData] = useState<ICard[] | []>([]);
   const [isPokemonLoading, setIsPokemonLoading] = useState(true);
   const [searchParams] = useSearchParams();
@@ -48,12 +46,11 @@ export function PokemonProvider({
     options.itemsLimit !== null && options.offset !== null
       ? options
       : undefined;
-
   useEffect(() => {
     async function fetchData(): Promise<void> {
       try {
         const response = await loadData({
-          offset: currentPage - 1,
+          offset: 0,
           options: options,
         });
         setPokemonData(response);

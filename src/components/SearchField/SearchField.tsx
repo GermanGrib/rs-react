@@ -1,7 +1,7 @@
 import { ReactElement, SyntheticEvent, useContext, useState } from 'react';
 
 import { loadData } from '../../Utils';
-import { locCurrentPage, locSearchValue } from '../../const';
+import { locSearchValue } from '../../const';
 // import PageContext from '../../context/PagesProvider';
 import PokemonDataContext from '../../context/PokemonProvider';
 import styles from './searchField.module.scss';
@@ -13,7 +13,6 @@ if (!localStorage.getItem(locSearchValue)) {
 function SearchField(): ReactElement {
   const { setPokemonData, setIsPokemonLoading } =
     useContext(PokemonDataContext);
-  const currentPage = Number(localStorage.getItem(locCurrentPage));
   const savedSearchValue = localStorage.getItem(locSearchValue) || '';
   const [searchValue, setSearchValue] = useState(savedSearchValue);
 
@@ -28,7 +27,7 @@ function SearchField(): ReactElement {
     try {
       setIsPokemonLoading(true);
       localStorage.setItem(locSearchValue, searchValue);
-      const pokemonData = await loadData({ offset: currentPage });
+      const pokemonData = await loadData({ offset: 0 });
       setPokemonData(pokemonData);
     } catch {
       setPokemonData([]);

@@ -12,7 +12,7 @@ export async function axios<T>({ url, options }: IAxiosParams): Promise<T> {
   try {
     if (options) {
       const { searchString, itemsLimit, searchID } = options;
-      const { offset } = options;
+      const { offset = 0 } = options;
       let fetchUrl = url;
 
       if (offset) {

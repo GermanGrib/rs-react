@@ -3,6 +3,7 @@ import {
   locCurrentPage,
   locSearchValue,
   maxItemsPerPage,
+  totalResponseItems,
 } from '../const';
 import { axios } from '../services/pokemonService';
 import { POKEMON_URL } from '../services/pokemonService/variables';
@@ -87,6 +88,7 @@ export const loadData = async ({
           offset: options?.offset ? String(options.offset) : String(offset),
         },
       });
+      sessionStorage.setItem(totalResponseItems, String(response.count));
       const { results } = response;
       return await listDataForCards(results);
     } catch {

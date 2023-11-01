@@ -2,7 +2,7 @@ import { ReactElement, useContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { fetchData } from '../../Utils';
-import { maxItemsPerPage } from '../../const';
+import { maxItemsPerPage, totalResponseItems } from '../../const';
 import PokemonDataContext from '../../context/PokemonProvider';
 import { ChangePageBtn } from './ChangePageBtn';
 import { PagesCountOptions } from './PagesCountOptions';
@@ -14,6 +14,12 @@ function Pagination(): ReactElement {
     useContext(PokemonDataContext);
   const [, setSearchParams] = useSearchParams();
   const limit = sessionStorage.getItem(maxItemsPerPage);
+  const totalItems = sessionStorage.getItem(totalResponseItems);
+  const maxItems = sessionStorage.getItem(maxItemsPerPage);
+  const totalPages =
+    totalItems && maxItems
+      ? Math.ceil(Number(totalItems) / Number(maxItems))
+      : '';
 
   async function onChangePageBtnClick(isPrevious: boolean): Promise<void> {
     const updatedPage = isPrevious ? page - 1 : page + 1;
@@ -55,7 +61,7 @@ function Pagination(): ReactElement {
         onClick={(): Promise<void> => onChangePageBtnClick(false)}
         isPrevious={false}
       />
-      <div>Total pages:</div>
+      <div>Total pages: {totalPages}</div>
     </div>
   );
 }

@@ -13,7 +13,7 @@ function PagesCountOptions({ onChange }: PagesCountProps): ReactElement {
   const [selectedValue, setSelectedValue] = useState('20');
   const { setPokemonData, setIsPokemonLoading } =
     useContext(PokemonDataContext);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const maxItemsOnPage = searchParams.get('limit');
 
   async function handleSelectChange(
@@ -27,6 +27,8 @@ function PagesCountOptions({ onChange }: PagesCountProps): ReactElement {
       onChange();
       const data = await loadData({ offset: 0 });
       setPokemonData(data);
+      const options = `?limit=${currentValue}&offset=${0}`;
+      setSearchParams(options);
     } catch {
       throw new Error('During handleSelectChange');
     } finally {

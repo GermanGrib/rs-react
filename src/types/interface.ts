@@ -28,7 +28,12 @@ export interface IPokemonFullResponse {
 }
 
 export interface FetchData {
-  page: number;
+  offset: number;
   setIsPokemonLoading: (value: boolean) => void;
   setPokemonData: (value: ICard[]) => void;
+}
+
+export interface QueryOptions {
+  itemsLimit: string | null;
+  offset: string | null;
 }

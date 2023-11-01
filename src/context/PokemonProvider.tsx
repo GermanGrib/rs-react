@@ -7,10 +7,11 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { loadData } from '../Utils';
 import { locCurrentPage } from '../const';
-import { ICard } from '../types/interface';
+import { ICard, QueryOptions } from '../types/interface';
 
 interface PokemonContext {
   pokemonData: ICard[] | [];
@@ -38,11 +39,23 @@ export function PokemonProvider({
   const currentPage = Number(sessionStorage.getItem(locCurrentPage));
   const [pokemonData, setPokemonData] = useState<ICard[] | []>([]);
   const [isPokemonLoading, setIsPokemonLoading] = useState(true);
+  const [searchParams] = useSearchParams();
+  let options: QueryOptions | undefined = {
+    itemsLimit: searchParams.get('limit'),
+    offset: searchParams.get('offset'),
+  };
+  options =
+    options.itemsLimit !== null && options.offset !== null
+      ? options
+      : undefined;
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
       try {
-        const response = await loadData({ pageNumber: currentPage });
+        const response = await loadData({
+          offset: currentPage - 1,
+          options: options,
+        });
         setPokemonData(response);
         setIsPokemonLoading(false);
       } catch (error) {

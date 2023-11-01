@@ -2,8 +2,8 @@ interface IAxiosParams {
   url: string;
   options?: {
     searchString?: string;
-    pageNumber?: number;
-    itemsLimit?: number;
+    offset?: string;
+    itemsLimit?: string;
     searchID?: number;
   };
 }
@@ -12,11 +12,11 @@ export async function axios<T>({ url, options }: IAxiosParams): Promise<T> {
   try {
     if (options) {
       const { searchString, itemsLimit, searchID } = options;
-      const { pageNumber } = options;
+      const { offset } = options;
       let fetchUrl = url;
 
-      if (pageNumber) {
-        fetchUrl += `?limit=${itemsLimit}&offset=${pageNumber}`;
+      if (offset) {
+        fetchUrl += `?limit=${itemsLimit}&offset=${offset}`;
       }
 
       if (searchString) {

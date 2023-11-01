@@ -13,7 +13,7 @@ if (!localStorage.getItem(locSearchValue)) {
 function SearchField(): ReactElement {
   const { setPokemonData, setIsPokemonLoading } =
     useContext(PokemonDataContext);
-  const currentPage = Number(sessionStorage.getItem(locCurrentPage));
+  const currentPage = Number(localStorage.getItem(locCurrentPage));
   const savedSearchValue = localStorage.getItem(locSearchValue) || '';
   const [searchValue, setSearchValue] = useState(savedSearchValue);
 
@@ -28,7 +28,7 @@ function SearchField(): ReactElement {
     try {
       setIsPokemonLoading(true);
       localStorage.setItem(locSearchValue, searchValue);
-      const pokemonData = await loadData({ pageNumber: currentPage });
+      const pokemonData = await loadData({ offset: currentPage });
       setPokemonData(pokemonData);
     } catch {
       setPokemonData([]);

@@ -19,8 +19,8 @@ if (!sessionStorage.getItem(maxItemsPerPage)) {
   sessionStorage.setItem(maxItemsPerPage, String(MAX_CARDS_PER_PAGE));
 }
 
-if (!sessionStorage.getItem(locCurrentPage)) {
-  sessionStorage.setItem(locCurrentPage, '1');
+if (!localStorage.getItem(locCurrentPage)) {
+  localStorage.setItem(locCurrentPage, '1');
 }
 
 export function pokemonDataForCards(fullData: IPokemonData): ICard {
@@ -119,7 +119,7 @@ export async function fetchData({
     setIsPokemonLoading(true);
     const data = await loadData({ offset: offset });
     setPokemonData(data);
-    sessionStorage.setItem(locCurrentPage, String(offset));
+    localStorage.setItem(locCurrentPage, String(offset));
   } catch {
     return;
   } finally {

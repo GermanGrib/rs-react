@@ -2,24 +2,29 @@ import { ReactElement, useContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { fetchData } from '../../Utils';
-import { maxItemsPerPage, totalResponseItems } from '../../const';
+import {
+  locCurrentPage,
+  maxItemsPerPage,
+  totalResponseItems,
+} from '../../const';
 import PokemonDataContext from '../../context/PokemonProvider';
 import { ChangePageBtn } from './ChangePageBtn';
 import { PagesCountOptions } from './PagesCountOptions';
 import styles from './pagination.module.scss';
 
+const localStCurrentPage = Number(localStorage.getItem(locCurrentPage));
+
 function Pagination(): ReactElement {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(localStCurrentPage);
   const { setPokemonData, isPokemonLoading, setIsPokemonLoading } =
     useContext(PokemonDataContext);
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const limit = sessionStorage.getItem(maxItemsPerPage);
   const totalItems = sessionStorage.getItem(totalResponseItems);
-  const maxItems = sessionStorage.getItem(maxItemsPerPage);
   const totalPages =
-    totalItems && maxItems
-      ? Math.ceil(Number(totalItems) / Number(maxItems))
-      : '';
+    totalItems && limit ? Math.ceil(Number(totalItems) / Number(limit)) : '';
+  const searchOffset = searchParams.get('offset');
+  const showPage = searchOffset ? Number(searchOffset) + 1 : page;
 
   async function onChangePageBtnClick(isPrevious: boolean): Promise<void> {
     const updatedPage = isPrevious ? page - 1 : page + 1;
@@ -51,13 +56,13 @@ function Pagination(): ReactElement {
     >
       <PagesCountOptions onChange={onChangePagesCountOptions} />
       <ChangePageBtn
-        currentPage={page}
+        currentPage={showPage}
         onClick={(): Promise<void> => onChangePageBtnClick(true)}
         isPrevious
       />
-      <div>{page}</div>
+      <div>{showPage}</div>
       <ChangePageBtn
-        currentPage={page}
+        currentPage={showPage}
         onClick={(): Promise<void> => onChangePageBtnClick(false)}
         isPrevious={false}
       />

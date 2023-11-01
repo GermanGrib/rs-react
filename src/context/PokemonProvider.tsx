@@ -36,7 +36,7 @@ interface PokemonProviderProps {
 export function PokemonProvider({
   children,
 }: PokemonProviderProps): ReactElement {
-  const currentPage = Number(sessionStorage.getItem(locCurrentPage));
+  const currentPage = Number(localStorage.getItem(locCurrentPage));
   const [pokemonData, setPokemonData] = useState<ICard[] | []>([]);
   const [isPokemonLoading, setIsPokemonLoading] = useState(true);
   const [searchParams] = useSearchParams();

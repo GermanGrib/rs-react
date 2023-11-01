@@ -1,4 +1,9 @@
-import { MAX_CARDS_PER_PAGE } from '../const';
+import {
+  MAX_CARDS_PER_PAGE,
+  locCurrentPage,
+  locSearchValue,
+  maxItemsPerPage,
+} from '../const';
 import { axios } from '../services/pokemonService';
 import { POKEMON_URL } from '../services/pokemonService/variables';
 import {
@@ -8,12 +13,12 @@ import {
   IPokemonFullResponse,
 } from '../types/interface';
 
-if (!sessionStorage.getItem('max-pages')) {
-  sessionStorage.setItem('max-pages', String(MAX_CARDS_PER_PAGE));
+if (!sessionStorage.getItem(maxItemsPerPage)) {
+  sessionStorage.setItem(maxItemsPerPage, String(MAX_CARDS_PER_PAGE));
 }
 
-if (!sessionStorage.getItem('currentPage')) {
-  sessionStorage.setItem('currentPage', '1');
+if (!sessionStorage.getItem(locCurrentPage)) {
+  sessionStorage.setItem(locCurrentPage, '1');
 }
 
 export function pokemonDataForCards(fullData: IPokemonData): ICard {
@@ -65,8 +70,8 @@ interface LoadDataProps {
 export const loadData = async ({
   pageNumber,
 }: LoadDataProps): Promise<ICard[]> => {
-  const searchValue = localStorage.getItem('searchValue') || '';
-  const MAX_CARDS_PER_PAGE = sessionStorage.getItem('max-pages');
+  const searchValue = localStorage.getItem(locSearchValue) || '';
+  const MAX_CARDS_PER_PAGE = sessionStorage.getItem(maxItemsPerPage);
 
   if (!searchValue && searchValue.length === 0) {
     try {
@@ -107,7 +112,7 @@ export async function fetchData({
     setIsPokemonLoading(true);
     const data = await loadData({ pageNumber: page });
     setPokemonData(data);
-    sessionStorage.setItem('currentPage', String(page));
+    sessionStorage.setItem(locCurrentPage, String(page));
   } catch {
     return;
   } finally {

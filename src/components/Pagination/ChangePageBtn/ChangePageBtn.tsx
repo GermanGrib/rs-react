@@ -1,34 +1,20 @@
-import { Dispatch, ReactElement, SetStateAction } from 'react';
-
-import { fetchData } from '../../../Utils';
-import { ICard } from '../../../types/interface';
+import { ReactElement } from 'react';
 
 interface PrevBtnProps {
   currentPage: number;
-  setPokemonData: Dispatch<SetStateAction<ICard[] | []>>;
-  setIsPokemonLoading: Dispatch<SetStateAction<boolean>>;
+  onClick: () => void;
   isPrevious: boolean;
 }
 
 function ChangePageBtn({
   currentPage,
-  setPokemonData,
-  setIsPokemonLoading,
+  onClick,
   isPrevious,
 }: PrevBtnProps): ReactElement {
-  const pageNumber = isPrevious ? currentPage - 1 : currentPage + 1;
   const prevIsDisabled = isPrevious ? currentPage - 1 === 0 : false;
 
-  async function handleClick(): Promise<void> {
-    await fetchData({
-      page: pageNumber,
-      setPokemonData: setPokemonData,
-      setIsPokemonLoading: setIsPokemonLoading,
-    });
-  }
-
   return (
-    <button disabled={prevIsDisabled} onClick={handleClick}>
+    <button disabled={prevIsDisabled} onClick={onClick}>
       {isPrevious && '<'}
       {!isPrevious && '>'}
     </button>

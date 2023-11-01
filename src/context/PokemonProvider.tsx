@@ -9,6 +9,7 @@ import {
 } from 'react';
 
 import { loadData } from '../Utils';
+import { locCurrentPage } from '../const';
 import { ICard } from '../types/interface';
 
 interface PokemonContext {
@@ -34,7 +35,7 @@ interface PokemonProviderProps {
 export function PokemonProvider({
   children,
 }: PokemonProviderProps): ReactElement {
-  const currentPage = Number(sessionStorage.getItem('currentPage'));
+  const currentPage = Number(sessionStorage.getItem(locCurrentPage));
   const [pokemonData, setPokemonData] = useState<ICard[] | []>([]);
   const [isPokemonLoading, setIsPokemonLoading] = useState(true);
 

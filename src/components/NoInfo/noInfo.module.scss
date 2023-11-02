@@ -1,0 +1,19 @@
+@import '../../styles/common';
+
+.root {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 20%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: $border-radius;
+  background-color: $primary-light;
+}
+
+.content {
+  font-size: 2.5rem;
+}

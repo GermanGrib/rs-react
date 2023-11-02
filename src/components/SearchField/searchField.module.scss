@@ -1,0 +1,55 @@
+@import '../../styles/common';
+
+.root {
+  display: flex;
+  justify-content: center;
+  width: 45%;
+}
+
+.form {
+  position: relative;
+  width: 100%;
+  background-color: $accent-color;
+  border-radius: $border-radius;
+}
+
+.input,
+.button {
+  height: 5rem;
+  font-family: 'Lato', sans-serif;
+  border: 0;
+  color: $primary-dark;
+  font-size: 1.8rem;
+}
+
+.input {
+  position: relative;
+  padding: 0 1.6rem;
+  width: calc(100% - 8rem);
+  background: $primary-light;
+  border-radius: $border-radius;
+  //appearance: none;
+  outline: 0;
+  z-index: 1;
+}
+
+.button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8rem;
+  font-weight: bold;
+  background: $accent-color;
+  border-radius: 0 $border-radius $border-radius 0;
+  z-index: 1;
+}
+
+.label {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}

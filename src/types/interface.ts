@@ -35,6 +35,7 @@ export interface FetchData {
   offset: number;
   setIsPokemonLoading: (value: boolean) => void;
   setPokemonData: (value: ICard[]) => void;
+  options?: QueryOptions;
 }
 
 export interface QueryOptions {

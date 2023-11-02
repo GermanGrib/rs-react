@@ -1,14 +1,16 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 
 import styles from './callErrorBtn.module.scss';
 
-interface ErrorBtnProps {
-  onClick: () => void;
-}
+function CallErrorBtn(): ReactElement {
+  const [isError, setIsError] = useState(false);
 
-function CallErrorBtn({ onClick }: ErrorBtnProps): ReactElement {
+  if (isError) {
+    throw new Error('RS School Error task');
+  }
+
   return (
-    <button className={styles.btn} onClick={onClick}>
+    <button className={styles.btn} onClick={(): void => setIsError(!isError)}>
       !
     </button>
   );

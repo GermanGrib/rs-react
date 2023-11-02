@@ -2,43 +2,36 @@ import { ReactElement, useContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { fetchData } from '../../Utils';
-import { maxItemsPerPage, totalResponseItems } from '../../const';
 import PokemonDataContext from '../../context/PokemonProvider';
 import { ChangePageBtn } from './ChangePageBtn';
 import { PagesCountOptions } from './PagesCountOptions';
 import styles from './pagination.module.scss';
+import { getStorageData, isChangePageBtnDisabled } from './utils';
 
-interface PaginationProps {
-  isLocSearchValueEpmty: boolean;
-}
-
-function Pagination({ isLocSearchValueEpmty }: PaginationProps): ReactElement {
-  const [page, setPage] = useState(1);
+function Pagination(): ReactElement {
+  const [searchParams] = useSearchParams();
+  const initialPage =
+    searchParams.get('page') === null ? 1 : Number(searchParams.get('page'));
+  const [page, setPage] = useState(initialPage);
   const { setPokemonData, isPokemonLoading, setIsPokemonLoading } =
     useContext(PokemonDataContext);
   const [, setSearchParams] = useSearchParams();
-  const limit = sessionStorage.getItem(maxItemsPerPage);
-  const totalItems = sessionStorage.getItem(totalResponseItems);
+  const { limit, totalItems, localSearchValue } = getStorageData();
   const totalPages =
     totalItems && limit ? Math.ceil(Number(totalItems) / Number(limit)) : '';
+  const isLocSearchValueEmpty = localSearchValue === '';
 
   async function onChangePageBtnClick(isPrevious: boolean): Promise<void> {
     const updatedPage = isPrevious ? page - 1 : page + 1;
     const offset = (updatedPage - 1) * Number(limit);
     setPage(updatedPage);
-    try {
-      await fetchData({
-        offset: offset,
-        setPokemonData: setPokemonData,
-        setIsPokemonLoading: setIsPokemonLoading,
-      });
-      const options = `?limit=${limit}&offset=${offset}`;
-      setSearchParams(options);
-    } catch {
-      throw new Error('During click on change page btn');
-    } finally {
-      setIsPokemonLoading(false);
-    }
+    await fetchData({
+      offset: offset,
+      setPokemonData: setPokemonData,
+      setIsPokemonLoading: setIsPokemonLoading,
+    });
+    const options = `?limit=${limit}&offset=${offset}&page=${updatedPage}`;
+    setSearchParams(options);
   }
 
   function onChangePagesCountOptions(): void {
@@ -47,7 +40,7 @@ function Pagination({ isLocSearchValueEpmty }: PaginationProps): ReactElement {
 
   return (
     <>
-      {isLocSearchValueEpmty && (
+      {isLocSearchValueEmpty && (
         <div
           className={`${styles.container} ${
             isPokemonLoading ? styles.disable : ''
@@ -58,12 +51,18 @@ function Pagination({ isLocSearchValueEpmty }: PaginationProps): ReactElement {
             currentPage={page}
             onClick={(): Promise<void> => onChangePageBtnClick(true)}
             isPrevious
+            isDisabled={(): boolean =>
+              isChangePageBtnDisabled({ isPrevious: true, currentPage: page })
+            }
           />
           <div>{page}</div>
           <ChangePageBtn
             currentPage={page}
             onClick={(): Promise<void> => onChangePageBtnClick(false)}
             isPrevious={false}
+            isDisabled={(): boolean =>
+              isChangePageBtnDisabled({ isPrevious: false, currentPage: page })
+            }
           />
           <div>Total pages: {totalPages}</div>
         </div>

@@ -1,7 +1,7 @@
 import { ChangeEvent, ReactElement, useContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { loadData } from '../../../Utils';
+import { fetchData } from '../../../Utils';
 import { maxItemsPerPage } from '../../../const';
 import PokemonDataContext from '../../../context/PokemonProvider';
 
@@ -20,20 +20,15 @@ function PagesCountOptions({ onChange }: PagesCountProps): ReactElement {
     e: ChangeEvent<HTMLSelectElement>
   ): Promise<void> {
     const currentValue = e.target.value;
+    sessionStorage.setItem(maxItemsPerPage, currentValue);
+    await fetchData({
+      setPokemonData,
+      setIsPokemonLoading,
+      offset: 0,
+    });
+    setSearchParams(`?limit=${currentValue}&offset=${0}&page=1`);
     setSelectedValue(currentValue);
-    try {
-      sessionStorage.setItem(maxItemsPerPage, currentValue);
-      setIsPokemonLoading(true);
-      onChange();
-      const data = await loadData({ offset: 0 });
-      setPokemonData(data);
-      const options = `?limit=${currentValue}&offset=${0}`;
-      setSearchParams(options);
-    } catch {
-      throw new Error('During handleSelectChange');
-    } finally {
-      setIsPokemonLoading(false);
-    }
+    onChange();
   }
 
   return (

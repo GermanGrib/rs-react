@@ -1,14 +1,17 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { paths } from '../../../router/const';
 import { POKEMON_URL } from '../../../services/pokemonService/variables';
 import { DetailedCardData } from '../../../types/interface';
 import styles from './detailedCard.module.scss';
 
 function DetailedCard(): ReactElement {
-  const { cardId } = useParams();
+  const [searchParams] = useSearchParams();
+  const cardId = searchParams.get('detailed');
   const [pokemonData, setPokemonData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   async function fetchData(): Promise<void> {
     try {
@@ -27,10 +30,12 @@ function DetailedCard(): ReactElement {
   }
 
   useEffect(() => {
-    fetchData();
-  }, [cardId]);
+    if (searchParams.get('detailed')) {
+      fetchData();
+    }
+  }, []);
 
-  if (isLoading) {
+  if (isLoading && searchParams.get('detailed')) {
     return <div className={styles.loader}>Loading...</div>;
   }
 
@@ -40,7 +45,7 @@ function DetailedCard(): ReactElement {
 
   const destroyComponent = (): void => {
     setPokemonData(null);
-    setIsLoading(false);
+    navigate(paths.home);
   };
 
   const {

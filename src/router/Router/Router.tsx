@@ -9,7 +9,7 @@ function Router(): ReactElement {
   return (
     <Routes>
       <Route path={paths.home} element={<Home />}>
-        <Route path={`${paths.home}:cardId`} element={<DetailedCard />}></Route>
+        <Route path={`${paths.home}`} element={<DetailedCard />}></Route>
       </Route>
     </Routes>
   );

@@ -108,10 +108,11 @@ export async function fetchData({
   offset = 0,
   setIsPokemonLoading,
   setPokemonData,
+  options,
 }: FetchData): Promise<void> {
   try {
     setIsPokemonLoading(true);
-    const data = await loadData({ offset: offset });
+    const data = await loadData({ offset: offset, options });
     setPokemonData(data);
   } catch {
     return;

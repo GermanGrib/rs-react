@@ -1,5 +1,7 @@
-import { Dispatch, ReactElement, SetStateAction } from 'react';
+import { Dispatch, ReactElement, SetStateAction, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { paths } from '../../../router/const';
 import { ICard } from '../../../types/interface';
 import { NoInfo } from '../../NoInfo';
 import { Card } from '../Card';
@@ -17,6 +19,14 @@ function CardsList({
   isDetailedOpen,
 }: CardsListProps): ReactElement {
   const isCardsDataEmpty = Array.isArray(cardsData) && cardsData.length === 0;
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.size === 0) {
+      setIsDetailedOpen(false);
+    }
+  }, [searchParams]);
 
   function handleItemClick(): void {
     if (!isDetailedOpen) {
@@ -27,6 +37,7 @@ function CardsList({
   function handleListClick(): void {
     if (isDetailedOpen) {
       setIsDetailedOpen(false);
+      navigate(paths.home);
     }
   }
 

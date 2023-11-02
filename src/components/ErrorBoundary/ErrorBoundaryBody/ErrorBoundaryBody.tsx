@@ -3,11 +3,11 @@ import { ReactElement } from 'react';
 import { paths } from '../../../router/const';
 import styles from './errorBoundaryBody.module.scss';
 
-interface IErrorBoundaryBody {
+interface ErrorBodyProps {
   error: Error | null;
 }
 
-function ErrorBoundaryBody({ error }: IErrorBoundaryBody): ReactElement {
+function ErrorBoundaryBody({ error }: ErrorBodyProps): ReactElement {
   return (
     <div className={styles.root}>
       <div className={styles.content}>
@@ -19,7 +19,7 @@ function ErrorBoundaryBody({ error }: IErrorBoundaryBody): ReactElement {
         <a
           className={styles.link}
           onClick={(): void => window.location.reload()}
-          href={paths.pokemon}
+          href={paths.home}
         >
           Thankfully, we have a Frontend developer - just click on me, silly.
         </a>

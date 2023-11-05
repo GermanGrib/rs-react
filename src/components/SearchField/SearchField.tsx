@@ -1,71 +1,62 @@
-import { Component, ReactElement, SyntheticEvent } from 'react';
+import { ReactElement, SyntheticEvent, useContext, useState } from 'react';
 
+import { loadData } from '../../Utils';
+import { locSearchValue } from '../../const';
+// import PageContext from '../../context/PagesProvider';
+import PokemonDataContext from '../../context/PokemonProvider';
 import styles from './searchField.module.scss';
 
-interface SearchFieldState {
-  searchValue: string;
+if (!localStorage.getItem(locSearchValue)) {
+  localStorage.setItem(locSearchValue, '');
 }
 
-interface SearchFieldProps {
-  onSearch: () => Promise<void>;
-  toggleLoading: (isLoading: boolean) => void;
-}
+function SearchField(): ReactElement {
+  const { setPokemonData, setIsPokemonLoading } =
+    useContext(PokemonDataContext);
+  const savedSearchValue = localStorage.getItem(locSearchValue) || '';
+  const [searchValue, setSearchValue] = useState(savedSearchValue);
 
-class SearchField extends Component<SearchFieldProps, SearchFieldState> {
-  constructor(props: SearchFieldProps) {
-    super(props);
-    const savedSearchValue = localStorage.getItem('searchValue') || '';
-
-    this.state = {
-      searchValue: savedSearchValue,
-    };
-  }
-
-  handleSubmit = (e: SyntheticEvent): void => {
+  async function handleSubmit(e: SyntheticEvent): Promise<void> {
     e.preventDefault();
-    const searchValue = localStorage.getItem('searchValue') as string;
-    const currentInputValue = this.state.searchValue;
+    const localStorageSearchValue = localStorage.getItem(locSearchValue);
 
-    if (this.state) {
-      if (currentInputValue === searchValue) {
-        return;
-      }
-
-      localStorage.setItem('searchValue', currentInputValue.trim());
-      this.props.toggleLoading(true);
-      this.props.onSearch();
+    if (localStorageSearchValue === searchValue) {
+      return;
     }
-  };
 
-  render(): ReactElement {
-    return (
-      <div className={styles.root}>
-        <form
-          className={styles.form}
-          onSubmit={this.handleSubmit}
-          role="search"
-        >
-          <label className={styles.label} htmlFor="search">
-            Search for stuff
-          </label>
-          <input
-            className={styles.input}
-            onChange={(e): void =>
-              this.setState({ searchValue: e.target.value })
-            }
-            value={this.state.searchValue}
-            id="search"
-            type="search"
-            placeholder="Search..."
-            autoFocus
-          />
-          <button className={styles.button} type="submit">
-            Search
-          </button>
-        </form>
-      </div>
-    );
+    try {
+      setIsPokemonLoading(true);
+      localStorage.setItem(locSearchValue, searchValue);
+      const pokemonData = await loadData({ offset: 0 });
+      setPokemonData(pokemonData);
+    } catch {
+      setPokemonData([]);
+    } finally {
+      setIsPokemonLoading(false);
+    }
   }
+
+  return (
+    <div className={styles.root}>
+      <form className={styles.form} onSubmit={handleSubmit} role="search">
+        <label className={styles.label} htmlFor="search">
+          Search for stuff
+        </label>
+        <input
+          className={styles.input}
+          onChange={(e): void => setSearchValue(e.target.value)}
+          value={searchValue}
+          id="search"
+          type="search"
+          placeholder="Search..."
+          autoFocus
+        />
+        <button className={styles.button} type="submit">
+          Search
+        </button>
+      </form>
+    </div>
+  );
 }
 
 export default SearchField;

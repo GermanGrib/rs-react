@@ -1,10 +1,10 @@
-export interface ICardProps {
+export interface ICard {
   cardTitle: string;
   imgSrc: string;
   weight: string;
   height: string;
   experience: string;
-  id?: string;
+  id?: string | number;
 }
 
 interface ISprites {
@@ -20,6 +20,10 @@ export interface IPokemonData {
   sprites: ISprites;
 }
 
+export interface DetailedCardData extends IPokemonData {
+  types: { type: { name: string } }[];
+}
+
 export interface IPokemonFullResponse {
   count: number;
   next: null | string;
@@ -27,18 +31,14 @@ export interface IPokemonFullResponse {
   results: { name: string; url: string }[];
 }
 
-export interface IEachFullPokemonData extends IPokemonData {
-  abilities: unknown;
-  forms: unknown;
-  game_indices: unknown;
-  held_items: unknown;
-  is_default: unknown;
-  location_area_encounters: unknown;
-  moves: unknown;
-  order: unknown;
-  past_abilities: unknown;
-  past_types: unknown;
-  species: unknown;
-  stats: unknown;
-  types: unknown;
+export interface FetchData {
+  offset: number;
+  setIsPokemonLoading: (value: boolean) => void;
+  setPokemonData: (value: ICard[]) => void;
+  options?: QueryOptions;
+}
+
+export interface QueryOptions {
+  itemsLimit: string | null;
+  offset: string | null;
 }

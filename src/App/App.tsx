@@ -1,16 +1,17 @@
-import { Component, ReactElement } from 'react';
+import { ReactElement } from 'react';
 
 import { ErrorBoundary } from '../components/ErrorBoundary';
-import { Home } from '../pages/Home';
+import { PokemonProvider } from '../context/PokemonProvider';
+import { Router } from '../router/Router';
 
-class App extends Component {
-  render(): ReactElement {
-    return (
+function App(): ReactElement {
+  return (
+    <PokemonProvider>
       <ErrorBoundary fallback={<></>}>
-        <Home />
+        <Router />
       </ErrorBoundary>
-    );
-  }
+    </PokemonProvider>
+  );
 }
 
 export default App;

@@ -1,17 +1,24 @@
+import {
+  MAX_CARDS_PER_PAGE,
+  locSearchValue,
+  maxItemsPerPage,
+  totalResponseItems,
+} from '../const';
 import { axios } from '../services/pokemonService';
 import { POKEMON_URL } from '../services/pokemonService/variables';
 import {
-  ICardProps,
-  IEachFullPokemonData,
+  FetchData,
+  ICard,
   IPokemonData,
+  IPokemonFullResponse,
+  QueryOptions,
 } from '../types/interface';
 
-export function pokemonDataForCards(
-  fullData: IPokemonData | void
-): ICardProps | void {
-  if (fullData === undefined || fullData === null) {
-    return;
-  }
+if (!sessionStorage.getItem(maxItemsPerPage)) {
+  sessionStorage.setItem(maxItemsPerPage, String(MAX_CARDS_PER_PAGE));
+}
+
+export function pokemonDataForCards(fullData: IPokemonData): ICard {
   const { name, weight, height, base_experience, id, sprites } = fullData;
 
   return {
@@ -26,8 +33,8 @@ export function pokemonDataForCards(
 
 export async function listDataForCards(
   data: { name: string; url: string }[]
-): Promise<ICardProps[]> {
-  const pokemonsData: ICardProps[] = [];
+): Promise<ICard[]> {
+  const pokemonsData: ICard[] = [];
 
   if (Array.isArray(data)) {
     for (let i = 0; i <= data.length; i++) {
@@ -35,7 +42,7 @@ export async function listDataForCards(
         break;
       }
 
-      const pokemon: IEachFullPokemonData = await axios({
+      const pokemon: IPokemonData = await axios({
         url: POKEMON_URL,
         options: {
           searchString: data[i].name,
@@ -51,4 +58,65 @@ export async function listDataForCards(
   }
 
   return pokemonsData;
+}
+
+interface LoadDataProps {
+  offset: number;
+  options?: QueryOptions;
+}
+
+export const loadData = async ({
+  offset,
+  options,
+}: LoadDataProps): Promise<ICard[]> => {
+  const searchValue = localStorage.getItem(locSearchValue) || '';
+  const MAX_CARDS_PER_PAGE = sessionStorage.getItem(maxItemsPerPage);
+  if (!searchValue && searchValue.length === 0) {
+    try {
+      const response: IPokemonFullResponse = await axios({
+        url: POKEMON_URL,
+        options: {
+          itemsLimit: options?.itemsLimit
+            ? options.itemsLimit
+            : String(MAX_CARDS_PER_PAGE),
+          offset: options?.offset ? String(options.offset) : String(offset),
+        },
+      });
+      sessionStorage.setItem(totalResponseItems, String(response.count));
+      const { results } = response;
+      return await listDataForCards(results);
+    } catch {
+      throw new Error('While loading data:');
+    }
+  } else if (searchValue) {
+    try {
+      const data: IPokemonData = await axios({
+        url: POKEMON_URL,
+        options: {
+          searchString: searchValue,
+        },
+      });
+      return [pokemonDataForCards(data)];
+    } catch {
+      throw new Error('While loading data:');
+    }
+  }
+  return [];
+};
+
+export async function fetchData({
+  offset = 0,
+  setIsPokemonLoading,
+  setPokemonData,
+  options,
+}: FetchData): Promise<void> {
+  try {
+    setIsPokemonLoading(true);
+    const data = await loadData({ offset: offset, options });
+    setPokemonData(data);
+  } catch {
+    return;
+  } finally {
+    setIsPokemonLoading(false);
+  }
 }

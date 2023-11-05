@@ -1,39 +1,67 @@
-import { Component, ReactElement } from 'react';
+import { Dispatch, ReactElement, SetStateAction, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { ICardProps } from '../../../types/interface';
+import { paths } from '../../../router/const';
+import { ICard } from '../../../types/interface';
 import { NoInfo } from '../../NoInfo';
 import { Card } from '../Card';
 import styles from './cardsList.module.scss';
 
-class CardsList extends Component<{ cardsData: ICardProps[] }> {
-  renderCards(): ReactElement {
-    const isCardsDataEmpty =
-      Array.isArray(this.props.cardsData) && this.props.cardsData.length === 0;
-    return (
-      <>
-        {!isCardsDataEmpty &&
-          this.props.cardsData.map((el) => {
-            const { cardTitle, imgSrc, weight, height, experience, id } = el;
-            return (
-              <li key={id}>
-                <Card
-                  cardTitle={cardTitle}
-                  imgSrc={imgSrc}
-                  weight={weight}
-                  height={height}
-                  experience={experience}
-                />
-              </li>
-            );
-          })}
-        {isCardsDataEmpty && <NoInfo />}
-      </>
-    );
+interface CardsListProps {
+  cardsData: ICard[];
+  setIsDetailedOpen: Dispatch<SetStateAction<boolean>>;
+  isDetailedOpen: boolean;
+}
+
+function CardsList({
+  cardsData,
+  setIsDetailedOpen,
+  isDetailedOpen,
+}: CardsListProps): ReactElement {
+  const isCardsDataEmpty = Array.isArray(cardsData) && cardsData.length === 0;
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.size === 0) {
+      setIsDetailedOpen(false);
+    }
+  }, [searchParams]);
+
+  function handleItemClick(): void {
+    if (!isDetailedOpen) {
+      setIsDetailedOpen(true);
+    }
   }
 
-  render(): ReactElement {
-    return <ul className={styles.list}>{this.renderCards()}</ul>;
+  function handleListClick(): void {
+    if (isDetailedOpen) {
+      setIsDetailedOpen(false);
+      navigate(paths.home);
+    }
   }
+
+  return (
+    <ul className={styles.list} onClick={handleListClick}>
+      {!isCardsDataEmpty &&
+        cardsData.map((el) => {
+          const { id, cardTitle, imgSrc, weight, height, experience } = el;
+          return (
+            <li key={id} onClick={handleItemClick}>
+              <Card
+                id={id}
+                cardTitle={cardTitle}
+                imgSrc={imgSrc}
+                weight={weight}
+                height={height}
+                experience={experience}
+              />
+            </li>
+          );
+        })}
+      {isCardsDataEmpty && <NoInfo />}
+    </ul>
+  );
 }
 
 export default CardsList;

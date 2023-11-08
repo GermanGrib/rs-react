@@ -1,4 +1,4 @@
-export interface ICard {
+export interface CardProps {
   cardTitle: string;
   imgSrc: string;
   weight: string;
@@ -34,7 +34,7 @@ export interface IPokemonFullResponse {
 export interface FetchData {
   offset: number;
   setIsPokemonLoading: (value: boolean) => void;
-  setPokemonData: (value: ICard[]) => void;
+  setPokemonData: (value: CardProps[]) => void;
   options?: QueryOptions;
 }
 

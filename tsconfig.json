@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "ESNext",
     "types": [
-      "vite/client"
+      "vite/client",
+      "jest"
     ],
     "lib": [
       "DOM",

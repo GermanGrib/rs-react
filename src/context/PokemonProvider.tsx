@@ -10,11 +10,11 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 import { loadData } from '../Utils';
-import { ICard, QueryOptions } from '../types/interface';
+import { CardProps, QueryOptions } from '../types/interface';
 
 interface PokemonContext {
-  pokemonData: ICard[] | [];
-  setPokemonData: Dispatch<SetStateAction<ICard[] | []>>;
+  pokemonData: CardProps[] | [];
+  setPokemonData: Dispatch<SetStateAction<CardProps[] | []>>;
   isPokemonLoading: boolean;
   setIsPokemonLoading: Dispatch<SetStateAction<boolean>>;
 }
@@ -35,7 +35,7 @@ interface PokemonProviderProps {
 export function PokemonProvider({
   children,
 }: PokemonProviderProps): ReactElement {
-  const [pokemonData, setPokemonData] = useState<ICard[] | []>([]);
+  const [pokemonData, setPokemonData] = useState<CardProps[] | []>([]);
   const [isPokemonLoading, setIsPokemonLoading] = useState(true);
   const [searchParams] = useSearchParams();
   let options: QueryOptions | undefined = {

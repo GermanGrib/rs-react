@@ -1,14 +1,19 @@
-import { Dispatch, ReactElement, SetStateAction, useEffect } from 'react';
+import React, {
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useEffect,
+} from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { paths } from '../../../router/const';
-import { ICard } from '../../../types/interface';
+import { CardProps } from '../../../types/interface';
 import { NoInfo } from '../../NoInfo';
 import { Card } from '../Card';
 import styles from './cardsList.module.scss';
 
 interface CardsListProps {
-  cardsData: ICard[];
+  cardsData: CardProps[];
   setIsDetailedOpen: Dispatch<SetStateAction<boolean>>;
   isDetailedOpen: boolean;
 }

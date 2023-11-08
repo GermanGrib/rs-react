@@ -7,8 +7,8 @@ import {
 import { axios } from '../services/pokemonService';
 import { POKEMON_URL } from '../services/pokemonService/variables';
 import {
+  CardProps,
   FetchData,
-  ICard,
   IPokemonData,
   IPokemonFullResponse,
   QueryOptions,
@@ -18,7 +18,7 @@ if (!sessionStorage.getItem(maxItemsPerPage)) {
   sessionStorage.setItem(maxItemsPerPage, String(MAX_CARDS_PER_PAGE));
 }
 
-export function pokemonDataForCards(fullData: IPokemonData): ICard {
+export function pokemonDataForCards(fullData: IPokemonData): CardProps {
   const { name, weight, height, base_experience, id, sprites } = fullData;
 
   return {
@@ -33,8 +33,8 @@ export function pokemonDataForCards(fullData: IPokemonData): ICard {
 
 export async function listDataForCards(
   data: { name: string; url: string }[]
-): Promise<ICard[]> {
-  const pokemonsData: ICard[] = [];
+): Promise<CardProps[]> {
+  const pokemonsData: CardProps[] = [];
 
   if (Array.isArray(data)) {
     for (let i = 0; i <= data.length; i++) {
@@ -68,7 +68,7 @@ interface LoadDataProps {
 export const loadData = async ({
   offset,
   options,
-}: LoadDataProps): Promise<ICard[]> => {
+}: LoadDataProps): Promise<CardProps[]> => {
   const searchValue = localStorage.getItem(locSearchValue) || '';
   const MAX_CARDS_PER_PAGE = sessionStorage.getItem(maxItemsPerPage);
   if (!searchValue && searchValue.length === 0) {

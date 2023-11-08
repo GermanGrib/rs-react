@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import {
 import { CardsList } from './';
 
 describe('Test CardsList component', () => {
-  test('Should render items same as MAX_CARDS_ITEMS', () => {
+  test('Should verify that the component renders the specified number of cards', () => {
     const { container } = render(
       <MemoryRouter>
         <CardsList
@@ -27,7 +27,7 @@ describe('Test CardsList component', () => {
     }
   });
 
-  test('Should display appropriate message if no cards are present', () => {
+  test('Should check that an appropriate message is displayed if no cards are present', () => {
     const { getByText } = render(
       <MemoryRouter>
         <CardsList
@@ -40,5 +40,24 @@ describe('Test CardsList component', () => {
 
     const noCardsMessage = getByText('There is no data for this query');
     expect(noCardsMessage).toBeTruthy();
+  });
+
+  test('Should validate that clicking on a card opens a detailed card component', () => {
+    const setIsDetailedOpen = jest.fn();
+
+    const { getByText } = render(
+      <MemoryRouter>
+        <CardsList
+          cardsData={mockCardsData}
+          setIsDetailedOpen={setIsDetailedOpen}
+          isDetailedOpen={false}
+        />
+      </MemoryRouter>
+    );
+
+    const liElement = getByText('Title 20');
+    fireEvent.click(liElement);
+
+    expect(setIsDetailedOpen).toHaveBeenCalledWith(true);
   });
 });

@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { paths } from '../../../router/const';
@@ -58,7 +58,7 @@ function DetailedCard(): ReactElement {
   }: DetailedCardData = pokemonData;
 
   return (
-    <div className={styles.root}>
+    <div className={styles.root} data-testid="detailed-card">
       <div className={styles.content}>
         <div className={styles.imgContainer}>
           <img

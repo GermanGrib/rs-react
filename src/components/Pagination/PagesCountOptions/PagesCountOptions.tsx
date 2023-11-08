@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactElement, useContext, useState } from 'react';
+import React, { ChangeEvent, ReactElement, useContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { fetchData } from '../../../Utils';

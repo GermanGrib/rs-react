@@ -1,8 +1,12 @@
-import { ReactElement, SyntheticEvent, useContext, useState } from 'react';
+import React, {
+  ReactElement,
+  SyntheticEvent,
+  useContext,
+  useState,
+} from 'react';
 
 import { loadData } from '../../Utils';
 import { locSearchValue } from '../../const';
-// import PageContext from '../../context/PagesProvider';
 import PokemonDataContext from '../../context/PokemonProvider';
 import styles from './searchField.module.scss';
 

@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { ErrorBoundaryBody } from './ErrorBoundaryBody';
 
 describe('404 Page Component', () => {
-  test('Should display the 404 page for invalid routes', () => {
+  test('Should ensure that the 404 page is displayed when navigating to an invalid route', () => {
     const error = new Error('mock Error');
     render(
       <MemoryRouter initialEntries={['/invalid-route']}>

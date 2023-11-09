@@ -32,4 +32,19 @@ describe('Test SearchField Component', () => {
 
     loadDataSpy.mockRestore();
   });
+
+  test('Should check that the component retrieves the value from the local storage upon mounting', () => {
+    localStorage.setItem('user-search-value', 'mockTestValue');
+
+    render(
+      <MemoryRouter>
+        <SearchField />
+      </MemoryRouter>
+    );
+
+    const searchInput = screen.getByPlaceholderText(
+      'Search...'
+    ) as HTMLInputElement;
+    expect(searchInput.value).toBe('mockTestValue');
+  });
 });

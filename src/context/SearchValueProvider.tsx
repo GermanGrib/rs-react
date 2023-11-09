@@ -1,4 +1,9 @@
-import { ReactElement, ReactNode, createContext, useReducer } from 'react';
+import React, {
+  ReactElement,
+  ReactNode,
+  createContext,
+  useReducer,
+} from 'react';
 
 const initialState: SearchState = { searchValue: '' };
 
@@ -15,7 +20,7 @@ interface SearchContextProviderProps {
   children: ReactNode;
 }
 
-export const SearchContext = createContext<
+export const SearchValueContext = createContext<
   | {
       state: SearchState;
       dispatch: React.Dispatch<SearchValueAction<unknown>>;
@@ -48,8 +53,8 @@ export function SearchContextProvider({
   const [state, dispatch] = useReducer(searchReducer, initialState);
 
   return (
-    <SearchContext.Provider value={{ state, dispatch }}>
+    <SearchValueContext.Provider value={{ state, dispatch }}>
       {children}
-    </SearchContext.Provider>
+    </SearchValueContext.Provider>
   );
 }

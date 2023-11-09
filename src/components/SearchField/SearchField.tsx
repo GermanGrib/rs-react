@@ -4,30 +4,44 @@ import React, {
   useContext,
   useState,
 } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { loadData } from '../../Utils';
+import { userSearchValue } from '../../const';
 import PokemonDataContext from '../../context/PokemonProvider';
-import useSearchValueContext from '../../hooks/useSearchValueContext';
+import { paths } from '../../router/const';
 import styles from './searchField.module.scss';
+
+if (!localStorage.getItem(userSearchValue)) {
+  localStorage.setItem(userSearchValue, '');
+}
 
 function SearchField(): ReactElement {
   const { setPokemonData, setIsPokemonLoading } =
     useContext(PokemonDataContext);
-  const { state, dispatch } = useSearchValueContext();
-  const [searchValue, setSearchValue] = useState(state.searchValue || '');
+  const savedSearchValue = localStorage.getItem(userSearchValue) || '';
+  const [searchValue, setSearchValue] = useState(savedSearchValue);
+  const navigate = useNavigate();
 
   async function handleSubmit(e: SyntheticEvent): Promise<void> {
     e.preventDefault();
-    const savedSearchValue = state.searchValue;
+    const localStorageSearchValue = localStorage.getItem(userSearchValue);
 
-    if (savedSearchValue === searchValue) {
+    if (searchValue === '') {
+      navigate(paths.home);
+    }
+
+    if (localStorageSearchValue === searchValue) {
       return;
     }
 
     try {
+      localStorage.setItem(userSearchValue, searchValue);
       setIsPokemonLoading(true);
-      dispatch({ type: 'SET_SEARCH_VALUE', payload: searchValue });
-      const pokemonData = await loadData({ offset: 0, searchValue });
+      const pokemonData = await loadData({
+        offset: 0,
+        searchValue: searchValue,
+      });
       setPokemonData(pokemonData);
     } catch {
       setPokemonData([]);

@@ -2,6 +2,7 @@ import {
   MAX_CARDS_PER_PAGE,
   maxItemsPerPage,
   totalResponseItems,
+  userSearchValue,
 } from '../const';
 import { axios } from '../services/pokemonService';
 import { POKEMON_URL } from '../services/pokemonService/variables';
@@ -70,8 +71,9 @@ export const loadData = async ({
   options,
   searchValue,
 }: LoadDataProps): Promise<CardProps[]> => {
+  const localStorageSearchValue = localStorage.getItem(userSearchValue);
   const MAX_CARDS_PER_PAGE = sessionStorage.getItem(maxItemsPerPage);
-  if (!searchValue || searchValue.length === 0) {
+  if (!localStorageSearchValue && (!searchValue || searchValue.length === 0)) {
     try {
       const response: IPokemonFullResponse = await axios({
         url: POKEMON_URL,
@@ -88,7 +90,7 @@ export const loadData = async ({
     } catch {
       throw new Error('While loading data:');
     }
-  } else if (searchValue) {
+  } else if (localStorageSearchValue || searchValue) {
     try {
       const data: IPokemonData = await axios({
         url: POKEMON_URL,

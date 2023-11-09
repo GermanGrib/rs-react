@@ -10,6 +10,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 import { loadData } from '../Utils';
+import { userSearchValue } from '../const';
 import { CardProps, QueryOptions } from '../types/interface';
 
 interface PokemonContext {
@@ -38,6 +39,8 @@ export function PokemonProvider({
   const [pokemonData, setPokemonData] = useState<CardProps[] | []>([]);
   const [isPokemonLoading, setIsPokemonLoading] = useState(true);
   const [searchParams] = useSearchParams();
+  const searchValue = localStorage.getItem(userSearchValue) || undefined;
+
   let options: QueryOptions | undefined = {
     itemsLimit: searchParams.get('limit'),
     offset: searchParams.get('offset'),
@@ -52,6 +55,7 @@ export function PokemonProvider({
         const response = await loadData({
           offset: 0,
           options: options,
+          searchValue: searchValue,
         });
         setPokemonData(response);
         setIsPokemonLoading(false);

@@ -1,16 +1,16 @@
 import { useContext } from 'react';
 
 import {
-  SearchContext,
   SearchState,
   SearchValueAction,
+  SearchValueContext,
 } from '../context/SearchValueProvider';
 
 function useSearchValueContext(): {
   state: SearchState;
   dispatch: React.Dispatch<SearchValueAction<unknown>>;
 } {
-  const context = useContext(SearchContext);
+  const context = useContext(SearchValueContext);
   if (context === undefined) {
     throw new Error(
       'useSearchContext must be used within a SearchContextProvider'

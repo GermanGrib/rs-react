@@ -1,5 +1,6 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 
 import * as Utils from '../../Utils';
 import SearchField from './SearchField';
@@ -17,16 +18,18 @@ describe('Test SearchField Component', () => {
       .spyOn(Utils, 'loadData')
       .mockImplementation(fakeLoadData);
 
-    render(<SearchField />);
+    render(
+      <MemoryRouter>
+        <SearchField />
+      </MemoryRouter>
+    );
     const searchInput = screen.getByPlaceholderText('Search...');
+
     fireEvent.change(searchInput, { target: { value: 'test value' } });
-
-    act(() => {
-      fireEvent.submit(screen.getByRole('search'));
-    });
-
-    expect(localStorage.getItem('searchValue')).toBe('test value');
+    fireEvent.submit(searchInput);
+    expect(localStorage.getItem('user-search-value')).toBe('test value');
     expect(loadDataSpy).toHaveBeenCalled();
+
     loadDataSpy.mockRestore();
   });
 });

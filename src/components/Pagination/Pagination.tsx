@@ -2,26 +2,24 @@ import React, { ReactElement, useContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { fetchData } from '../../Utils';
+import { userSearchValue } from '../../const';
 import PokemonDataContext from '../../context/PokemonProvider';
-import useSearchValueContext from '../../hooks/useSearchValueContext';
 import { ChangePageBtn } from './ChangePageBtn';
 import { PagesCountOptions } from './PagesCountOptions';
 import styles from './pagination.module.scss';
 import { getStorageData, isChangePageBtnDisabled } from './utils';
 
 function Pagination(): ReactElement {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const initialPage =
     searchParams.get('page') === null ? 1 : Number(searchParams.get('page'));
   const [page, setPage] = useState(initialPage);
   const { setPokemonData, isPokemonLoading, setIsPokemonLoading } =
     useContext(PokemonDataContext);
-  const [, setSearchParams] = useSearchParams();
   const { limit, totalItems } = getStorageData();
   const totalPages =
     totalItems && limit ? Math.ceil(Number(totalItems) / Number(limit)) : '';
-  const { state } = useSearchValueContext();
-  const isEmptySearchValue = state.searchValue === '';
+  const isEmptySearchValue = localStorage.getItem(userSearchValue) === '';
 
   async function onChangePageBtnClick(isPrevious: boolean): Promise<void> {
     const updatedPage = isPrevious ? page - 1 : page + 1;

@@ -1,8 +1,4 @@
-import {
-  locSearchValue,
-  maxItemsPerPage,
-  totalResponseItems,
-} from '../../../const';
+import { maxItemsPerPage, totalResponseItems } from '../../../const';
 
 interface IsChangeBtnDisabledProps {
   isPrevious: boolean;
@@ -29,17 +25,14 @@ export function isChangePageBtnDisabled({
 interface GetStorageData {
   limit: string;
   totalItems: string;
-  localSearchValue: string;
 }
 
 export function getStorageData(): GetStorageData {
   const limit = sessionStorage.getItem(maxItemsPerPage);
   const totalItems = sessionStorage.getItem(totalResponseItems);
-  const localSearchValue = localStorage.getItem(locSearchValue);
 
   return {
     limit: limit || '',
     totalItems: totalItems || '',
-    localSearchValue: localSearchValue || '',
   };
 }

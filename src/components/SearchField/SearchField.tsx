@@ -6,32 +6,28 @@ import React, {
 } from 'react';
 
 import { loadData } from '../../Utils';
-import { locSearchValue } from '../../const';
 import PokemonDataContext from '../../context/PokemonProvider';
+import useSearchValueContext from '../../hooks/useSearchValueContext';
 import styles from './searchField.module.scss';
-
-if (!localStorage.getItem(locSearchValue)) {
-  localStorage.setItem(locSearchValue, '');
-}
 
 function SearchField(): ReactElement {
   const { setPokemonData, setIsPokemonLoading } =
     useContext(PokemonDataContext);
-  const savedSearchValue = localStorage.getItem(locSearchValue) || '';
-  const [searchValue, setSearchValue] = useState(savedSearchValue);
+  const { state, dispatch } = useSearchValueContext();
+  const [searchValue, setSearchValue] = useState(state.searchValue || '');
 
   async function handleSubmit(e: SyntheticEvent): Promise<void> {
     e.preventDefault();
-    const localStorageSearchValue = localStorage.getItem(locSearchValue);
+    const savedSearchValue = state.searchValue;
 
-    if (localStorageSearchValue === searchValue) {
+    if (savedSearchValue === searchValue) {
       return;
     }
 
     try {
       setIsPokemonLoading(true);
-      localStorage.setItem(locSearchValue, searchValue);
-      const pokemonData = await loadData({ offset: 0 });
+      dispatch({ type: 'SET_SEARCH_VALUE', payload: searchValue });
+      const pokemonData = await loadData({ offset: 0, searchValue });
       setPokemonData(pokemonData);
     } catch {
       setPokemonData([]);

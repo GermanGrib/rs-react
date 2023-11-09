@@ -1,6 +1,5 @@
 import {
   MAX_CARDS_PER_PAGE,
-  locSearchValue,
   maxItemsPerPage,
   totalResponseItems,
 } from '../const';
@@ -63,15 +62,16 @@ export async function listDataForCards(
 interface LoadDataProps {
   offset: number;
   options?: QueryOptions;
+  searchValue?: string;
 }
 
 export const loadData = async ({
   offset,
   options,
+  searchValue,
 }: LoadDataProps): Promise<CardProps[]> => {
-  const searchValue = localStorage.getItem(locSearchValue) || '';
   const MAX_CARDS_PER_PAGE = sessionStorage.getItem(maxItemsPerPage);
-  if (!searchValue && searchValue.length === 0) {
+  if (!searchValue || searchValue.length === 0) {
     try {
       const response: IPokemonFullResponse = await axios({
         url: POKEMON_URL,

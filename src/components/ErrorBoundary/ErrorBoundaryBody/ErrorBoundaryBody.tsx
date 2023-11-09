@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 
 import { paths } from '../../../router/const';
 import styles from './errorBoundaryBody.module.scss';

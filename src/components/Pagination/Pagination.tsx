@@ -63,6 +63,7 @@ function Pagination(): ReactElement {
             isDisabled={(): boolean =>
               isChangePageBtnDisabled({ isPrevious: false, currentPage: page })
             }
+            data-testid="next-page"
           />
           <div>Total pages: {totalPages}</div>
         </div>

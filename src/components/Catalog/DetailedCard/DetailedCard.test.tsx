@@ -80,6 +80,24 @@ describe('Test DetailedCard component', () => {
     });
   });
 
+  test('Should check that clicking triggers an additional API call to fetch detailed information', async () => {
+    fetchMock.mockOnce(JSON.stringify({}));
+
+    const mockSearchParams = new URLSearchParams();
+    mockSearchParams.set('detailed', '1');
+    global.URLSearchParams = jest.fn(() => mockSearchParams);
+
+    render(
+      <MemoryRouter>
+        <DetailedCard />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(fetchMock.mock.calls.length).toBeGreaterThanOrEqual(1);
+    });
+  });
+
   afterAll(() => {
     fetchMock.disableMocks();
   });

@@ -10,7 +10,8 @@
     "format:fix": "prettier --write \"**/*.{html,css,scss,tsx,ts,js,jsx}\"",
     "preview": "vite preview",
     "prepare": "husky install",
-    "test": "jest --config jest.config.json"
+    "test": "jest --config jest.config.json",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "@testing-library/user-event": "^14.5.1",

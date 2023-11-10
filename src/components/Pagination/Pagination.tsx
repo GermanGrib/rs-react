@@ -48,6 +48,7 @@ function Pagination(): ReactElement {
         >
           <PagesCountOptions onChange={onChangePagesCountOptions} />
           <ChangePageBtn
+            data-testid="prev-page"
             currentPage={page}
             onClick={(): Promise<void> => onChangePageBtnClick(true)}
             isPrevious

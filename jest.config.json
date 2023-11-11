@@ -1,0 +1,14 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "jsdom",
+  "transform": {
+    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
+    "\\.(css|less|scss)$": "jest-transform-stub"
+  },
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "jsx"
+  ]
+}

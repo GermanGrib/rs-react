@@ -1,0 +1,22 @@
+@import '../../styles/common';
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5rem;
+  height: 5rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+  background-color: #de3163;
+  color: $primary-light;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: opacity $transition-set;
+
+  &:hover {
+    opacity: 0.5;
+  }
+}

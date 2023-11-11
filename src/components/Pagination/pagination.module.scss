@@ -1,0 +1,27 @@
+@import '../../styles/common';
+
+.container {
+  display: flex;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  color: $primary-light;
+  font-size: 2rem;
+  transition: opacity $transition-set;
+
+  & div {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  & button {
+    cursor: pointer;
+  }
+
+  &.disable {
+    user-select: none;
+    pointer-events: none;
+    opacity: 0.7;
+  }
+}

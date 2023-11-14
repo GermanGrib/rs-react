@@ -5,9 +5,14 @@ import { CardProps } from '../../../types/interface';
 import { StatsField } from './StatsField';
 import styles from './card.module.scss';
 
-function Card(props: CardProps): ReactElement {
-  const { cardTitle, imgSrc, weight, height, experience, id } = props;
-
+function Card({
+  cardTitle,
+  imgSrc,
+  weight,
+  height,
+  experience,
+  id,
+}: CardProps): ReactElement {
   return (
     <Link to={`?detailed=${id}`} className={styles.profile}>
       <div className={styles.profileImage}>

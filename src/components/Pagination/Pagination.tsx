@@ -48,8 +48,6 @@ function Pagination(): ReactElement {
         >
           <PagesCountOptions onChange={onChangePagesCountOptions} />
           <ChangePageBtn
-            data-testid="prev-page"
-            currentPage={page}
             onClick={(): Promise<void> => onChangePageBtnClick(true)}
             isPrevious
             isDisabled={(): boolean =>
@@ -58,9 +56,8 @@ function Pagination(): ReactElement {
           />
           <div>{page}</div>
           <ChangePageBtn
-            currentPage={page}
             onClick={(): Promise<void> => onChangePageBtnClick(false)}
-            isPrevious={false}
+            isNext
             isDisabled={(): boolean =>
               isChangePageBtnDisabled({ isPrevious: false, currentPage: page })
             }

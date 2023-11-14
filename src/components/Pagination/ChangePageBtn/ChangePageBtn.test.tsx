@@ -9,7 +9,6 @@ describe('Test ChangePageBtn component', () => {
     const isDisabled = jest.fn(() => false);
     const { container } = render(
       <ChangePageBtn
-        currentPage={1}
         onClick={onClick}
         isPrevious={true}
         isDisabled={isDisabled}
@@ -27,12 +26,7 @@ describe('Test ChangePageBtn component', () => {
     const onClick = jest.fn();
     const isDisabled = jest.fn(() => false);
     const { container } = render(
-      <ChangePageBtn
-        currentPage={1}
-        onClick={onClick}
-        isPrevious={false}
-        isDisabled={isDisabled}
-      />
+      <ChangePageBtn onClick={onClick} isNext isDisabled={isDisabled} />
     );
     const button = container.querySelector('button');
 
@@ -47,7 +41,6 @@ describe('Test ChangePageBtn component', () => {
     const isDisabled = jest.fn(() => false);
     const { container } = render(
       <ChangePageBtn
-        currentPage={1}
         onClick={onClick}
         isPrevious={false}
         isDisabled={isDisabled}
@@ -66,7 +59,6 @@ describe('Test ChangePageBtn component', () => {
     const isDisabled = jest.fn(() => true);
     const { container } = render(
       <ChangePageBtn
-        currentPage={1}
         onClick={onClick}
         isPrevious={false}
         isDisabled={isDisabled}

@@ -1,22 +1,25 @@
-import React, { ReactElement } from 'react';
+import React, { HTMLAttributes, ReactElement } from 'react';
 
-interface PrevBtnProps {
-  currentPage: number;
-  onClick: () => void;
-  isPrevious: boolean;
+interface ChangePageBtnProps extends HTMLAttributes<HTMLButtonElement> {
+  isPrevious?: boolean;
+  isNext?: boolean;
   isDisabled: () => boolean;
 }
 
 function ChangePageBtn({
-  onClick,
   isPrevious,
+  isNext,
+  children,
   isDisabled,
-}: PrevBtnProps): ReactElement {
+  ...props
+}: ChangePageBtnProps): ReactElement {
   const disabled = isDisabled();
 
   return (
-    <button disabled={disabled} onClick={onClick}>
-      {isPrevious ? '<' : '>'}
+    <button disabled={disabled} {...props}>
+      {isPrevious && '<'}
+      {isNext && '>'}
+      {children}
     </button>
   );
 }

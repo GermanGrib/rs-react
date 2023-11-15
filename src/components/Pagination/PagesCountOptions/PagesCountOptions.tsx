@@ -26,7 +26,7 @@ function PagesCountOptions({ onChange }: PagesCountProps): ReactElement {
       setIsPokemonLoading,
       offset: 0,
     });
-    setSearchParams(`?limit=${currentValue}&offset=${0}&page=1`);
+    setSearchParams({ limit: currentValue, offset: '0', page: '1' });
     setSelectedValue(currentValue);
     onChange();
   }

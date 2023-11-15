@@ -30,8 +30,11 @@ function Pagination(): ReactElement {
       setPokemonData: setPokemonData,
       setIsPokemonLoading: setIsPokemonLoading,
     });
-    const options = `?limit=${limit}&offset=${offset}&page=${updatedPage}`;
-    setSearchParams(options);
+    setSearchParams({
+      limit: limit,
+      offset: String(offset),
+      page: String(updatedPage),
+    });
   }
 
   function onChangePagesCountOptions(): void {

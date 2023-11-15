@@ -1,15 +1,12 @@
-import React, {
-  ReactElement,
-  SyntheticEvent,
-  useContext,
-  useState,
-} from 'react';
+import React, { ReactElement, SyntheticEvent, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { loadData } from '../../Utils';
 import { userSearchValue } from '../../const';
 import PokemonDataContext from '../../context/PokemonProvider';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { paths } from '../../router/const';
+import { setSearchValue } from '../../store/slices/searchValueSlice';
 import styles from './searchField.module.scss';
 
 if (!localStorage.getItem(userSearchValue)) {
@@ -20,27 +17,32 @@ function SearchField(): ReactElement {
   const { setPokemonData, setIsPokemonLoading } =
     useContext(PokemonDataContext);
   const savedSearchValue = localStorage.getItem(userSearchValue) || '';
-  const [searchValue, setSearchValue] = useState(savedSearchValue);
+  const storeSearchValue = useAppSelector(
+    (state) => state.searchValue.searchValue
+  );
+  const dispatch = useAppDispatch();
+  console.log(storeSearchValue, 'HERE IS SEARCH STORE VALUE');
+  // const [searchValue, setSearchValue] = useState(savedSearchValue);
   const navigate = useNavigate();
 
   async function handleSubmit(e: SyntheticEvent): Promise<void> {
     e.preventDefault();
     const localStorageSearchValue = localStorage.getItem(userSearchValue);
 
-    if (searchValue === '') {
+    if (savedSearchValue === '') {
       navigate(paths.home);
     }
 
-    if (localStorageSearchValue === searchValue) {
+    if (localStorageSearchValue === savedSearchValue) {
       return;
     }
 
     try {
-      localStorage.setItem(userSearchValue, searchValue);
+      localStorage.setItem(userSearchValue, savedSearchValue);
       setIsPokemonLoading(true);
       const pokemonData = await loadData({
         offset: 0,
-        searchValue: searchValue,
+        searchValue: savedSearchValue,
       });
       setPokemonData(pokemonData);
     } catch {
@@ -58,8 +60,10 @@ function SearchField(): ReactElement {
         </label>
         <input
           className={styles.input}
-          onChange={(e): void => setSearchValue(e.target.value)}
-          value={searchValue}
+          onChange={(e): void => {
+            dispatch(setSearchValue(e.target.value));
+          }}
+          value={storeSearchValue}
           id="search"
           type="search"
           placeholder="Search..."

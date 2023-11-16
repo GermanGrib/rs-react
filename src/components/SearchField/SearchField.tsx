@@ -21,28 +21,26 @@ function SearchField(): ReactElement {
     (state) => state.searchValue.searchValue
   );
   const dispatch = useAppDispatch();
-  console.log(storeSearchValue, 'HERE IS SEARCH STORE VALUE');
-  // const [searchValue, setSearchValue] = useState(savedSearchValue);
   const navigate = useNavigate();
 
   async function handleSubmit(e: SyntheticEvent): Promise<void> {
     e.preventDefault();
-    const localStorageSearchValue = localStorage.getItem(userSearchValue);
 
     if (savedSearchValue === '') {
       navigate(paths.home);
     }
 
-    if (localStorageSearchValue === savedSearchValue) {
+    if (storeSearchValue === savedSearchValue) {
       return;
     }
 
     try {
-      localStorage.setItem(userSearchValue, savedSearchValue);
+      localStorage.setItem(userSearchValue, storeSearchValue);
+      dispatch(setSearchValue(storeSearchValue));
       setIsPokemonLoading(true);
       const pokemonData = await loadData({
         offset: 0,
-        searchValue: savedSearchValue,
+        searchValue: storeSearchValue,
       });
       setPokemonData(pokemonData);
     } catch {

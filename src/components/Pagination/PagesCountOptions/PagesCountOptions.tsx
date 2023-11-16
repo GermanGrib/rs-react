@@ -1,16 +1,21 @@
-import React, { ChangeEvent, ReactElement, useContext, useState } from 'react';
+import React, { ChangeEvent, ReactElement, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { fetchData } from '../../../Utils';
 import { maxItemsPerPage } from '../../../const';
 import PokemonDataContext from '../../../context/PokemonProvider';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
+import { setMaxItemsPerPage } from '../../../store/slices/itemsPerPageSlice';
 
 interface PagesCountProps {
   onChange: () => void;
 }
 
 function PagesCountOptions({ onChange }: PagesCountProps): ReactElement {
-  const [selectedValue, setSelectedValue] = useState('20');
+  const selectedValue = useAppSelector(
+    (state) => state.itemsPerPage.maxItemsPerPage
+  );
+  const dispatch = useAppDispatch();
   const { setPokemonData, setIsPokemonLoading } =
     useContext(PokemonDataContext);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -26,8 +31,8 @@ function PagesCountOptions({ onChange }: PagesCountProps): ReactElement {
       setIsPokemonLoading,
       offset: 0,
     });
+    dispatch(setMaxItemsPerPage(currentValue));
     setSearchParams({ limit: currentValue, offset: '0', page: '1' });
-    setSelectedValue(currentValue);
     onChange();
   }
 

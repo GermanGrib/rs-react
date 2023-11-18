@@ -1,11 +1,9 @@
-import React, { ReactElement, SyntheticEvent, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { ReactElement, SyntheticEvent, useContext, useRef } from 'react';
 
 import { loadData } from '../../Utils';
 import { userSearchValue } from '../../const';
 import PokemonDataContext from '../../context/PokemonProvider';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
-import { paths } from '../../router/const';
 import { setSearchValue } from '../../store/slices/searchValueSlice';
 import styles from './searchField.module.scss';
 
@@ -14,33 +12,26 @@ if (!localStorage.getItem(userSearchValue)) {
 }
 
 function SearchField(): ReactElement {
-  const { setPokemonData, setIsPokemonLoading } =
+  const { isPokemonLoading, setPokemonData, setIsPokemonLoading } =
     useContext(PokemonDataContext);
   const savedSearchValue = localStorage.getItem(userSearchValue) || '';
   const storeSearchValue = useAppSelector(
     (state) => state.searchValue.searchValue
   );
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const searchRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit(e: SyntheticEvent): Promise<void> {
+    const searchRefValue = searchRef.current ? searchRef.current.value : '';
     e.preventDefault();
 
-    if (savedSearchValue === '') {
-      navigate(paths.home);
-    }
-
-    if (storeSearchValue === savedSearchValue) {
-      return;
-    }
-
     try {
-      localStorage.setItem(userSearchValue, storeSearchValue);
-      dispatch(setSearchValue(storeSearchValue));
+      dispatch(setSearchValue(searchRefValue));
+      localStorage.setItem(userSearchValue, searchRefValue);
       setIsPokemonLoading(true);
       const pokemonData = await loadData({
         offset: 0,
-        searchValue: storeSearchValue,
+        searchValue: searchRefValue,
       });
       setPokemonData(pokemonData);
     } catch {
@@ -58,14 +49,13 @@ function SearchField(): ReactElement {
         </label>
         <input
           className={styles.input}
-          onChange={(e): void => {
-            dispatch(setSearchValue(e.target.value));
-          }}
-          value={storeSearchValue}
+          ref={searchRef}
+          defaultValue={savedSearchValue ? savedSearchValue : storeSearchValue}
           id="search"
           type="search"
           placeholder="Search..."
           autoFocus
+          disabled={isPokemonLoading}
         />
         <button className={styles.button} type="submit">
           Search

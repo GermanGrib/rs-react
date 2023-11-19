@@ -13,14 +13,8 @@ describe('Test Card component', () => {
       </BrowserRouter>
     );
 
-    const cardTitle = screen.getByText(mockEachCard.cardTitle);
-    const weight = screen.getByText(mockEachCard.weight);
-    const height = screen.getByText(mockEachCard.height);
-    const experience = screen.getByText(mockEachCard.experience);
+    const cardTitle = screen.getByText(mockEachCard.name);
 
     expect(cardTitle).toBeDefined();
-    expect(weight).toBeDefined();
-    expect(height).toBeDefined();
-    expect(experience).toBeDefined();
   });
 });

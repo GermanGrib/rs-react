@@ -16,6 +16,7 @@ describe('Test CardsList component', () => {
           cardsData={mockCardsData}
           setIsDetailedOpen={(): void => {}}
           isDetailedOpen={false}
+          isCardsDataError={false}
         />
       </MemoryRouter>
     );
@@ -34,6 +35,7 @@ describe('Test CardsList component', () => {
           cardsData={[]}
           setIsDetailedOpen={(): void => {}}
           isDetailedOpen={false}
+          isCardsDataError={true}
         />
       </MemoryRouter>
     );
@@ -51,6 +53,7 @@ describe('Test CardsList component', () => {
           cardsData={mockCardsData}
           setIsDetailedOpen={setIsDetailedOpen}
           isDetailedOpen={false}
+          isCardsDataError={false}
         />
       </MemoryRouter>
     );

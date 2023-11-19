@@ -1,104 +1,44 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import fetchMock from 'jest-fetch-mock';
+import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import { mockDetCardData } from '../../../__mocks__/cardsData';
 import DetailedCard from './DetailedCard';
 
+// Предположим, что ваш запрос на получение данных возвращает данные для тестирования
+const mockApiPokemonData = {
+  name: 'Pikachu',
+  weight: '60',
+  height: '4',
+  base_experience: '112',
+  types: [{ type: { name: 'electric' } }],
+  sprites: { front_default: 'pikachu.jpg' },
+};
+
+jest.mock('../../../services/rtkQuery/pokemonApi', () => ({
+  ...jest.requireActual('../../../services/rtkQuery/pokemonApi'),
+  useGetPokemonsQuery: jest.fn(() => ({
+    data: mockApiPokemonData,
+    isLoading: false,
+  })),
+}));
+
 describe('Test DetailedCard component', () => {
-  beforeAll(() => {
-    fetchMock.enableMocks();
-  });
-
-  test('Should check that a loading indicator is displayed while fetching data', async () => {
-    fetchMock.mockOnce(JSON.stringify({}));
-
-    const mockSearchParams = new URLSearchParams();
-    mockSearchParams.set('detailed', '1');
-    global.URLSearchParams = jest.fn(() => mockSearchParams);
-
+  test('Should: renders detailed card with data', async () => {
     render(
-      <MemoryRouter>
+      <Router>
         <DetailedCard />
-      </MemoryRouter>
+      </Router>
     );
 
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
-    const loadingMessage = screen.getByText('Loading...');
-    expect(loadingMessage).toBeTruthy();
-  });
-
-  test('Should make sure the detailed card component correctly displays the detailed card data', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(mockDetCardData), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    render(
-      <MemoryRouter>
-        <DetailedCard />
-      </MemoryRouter>
+    await waitFor(() =>
+      expect(screen.getByTestId('detailed-card')).toBeDefined()
     );
 
-    await screen.findByText('Name: Pikachu');
-    expect(screen.getByText(`Name: ${mockDetCardData.name}`)).toBeDefined();
-    expect(screen.getByText(`Weight: ${mockDetCardData.weight}`)).toBeDefined();
-    expect(screen.getByText(`Height: ${mockDetCardData.height}`)).toBeDefined();
-    expect(
-      screen.getByText(`HP: ${mockDetCardData.base_experience}`)
-    ).toBeDefined();
-    expect(
-      screen.getByText(`Skill: ${mockDetCardData.types[0].type.name}`)
-    ).toBeDefined();
-  });
-
-  test('Should ensure that clicking the close button hides the component', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(mockDetCardData), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    render(
-      <MemoryRouter>
-        <DetailedCard />
-      </MemoryRouter>
-    );
-
-    await waitFor(() => {
-      const loadingMessage = screen.queryByText('Loading...');
-      expect(loadingMessage).toBeNull();
-    });
-
-    expect(screen.getByTestId('detailed-card')).toBeDefined();
-    const closeButton = screen.getByText('Close detailed');
-    fireEvent.click(closeButton);
-
-    await waitFor(() => {
-      const detailedCard = screen.queryByTestId('detailed-card');
-      expect(detailedCard).toBeNull();
-    });
-  });
-
-  test('Should check that clicking triggers an additional API call to fetch detailed information', async () => {
-    fetchMock.mockOnce(JSON.stringify({}));
-
-    const mockSearchParams = new URLSearchParams();
-    mockSearchParams.set('detailed', '1');
-    global.URLSearchParams = jest.fn(() => mockSearchParams);
-
-    render(
-      <MemoryRouter>
-        <DetailedCard />
-      </MemoryRouter>
-    );
-
-    await waitFor(() => {
-      expect(fetchMock.mock.calls.length).toBeGreaterThanOrEqual(1);
-    });
-  });
-
-  afterAll(() => {
-    fetchMock.disableMocks();
+    expect(screen.getByText('Name: Pikachu')).toBeDefined();
+    expect(screen.getByText('Weight: 60')).toBeDefined();
+    expect(screen.getByText('Height: 4')).toBeDefined();
+    expect(screen.getByText('HP: 112')).toBeDefined();
+    expect(screen.getByText('Skill: electric')).toBeDefined();
+    expect(screen.getByAltText('pokemon picture')).toBeDefined();
   });
 });

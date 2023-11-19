@@ -68,12 +68,7 @@ function Pagination(): ReactElement {
           <ChangePageBtn
             onClick={(): Promise<void> => onChangePageBtnClick(false)}
             isNext
-            isDisabled={(): boolean =>
-              isChangePageBtnDisabled({
-                isPrevious: false,
-                currentPage: page,
-              })
-            }
+            isDisabled={(): boolean => false}
             data-testid="next-page"
           />
         </div>

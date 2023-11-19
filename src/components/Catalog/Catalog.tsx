@@ -1,31 +1,34 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import PokemonDataContext from '../../context/PokemonProvider';
+import { userSearchValue } from '../../const';
+import { useGetPokemonsQuery } from '../../services/rtkQuery/pokemonApi';
+import { mapPokemonData } from '../../utils';
 import { Loading } from '../Loading';
 import { Pagination } from '../Pagination';
 import { CardsList } from './CardsList';
 import styles from './catalog.module.scss';
 
 function Catalog(): ReactElement {
-  const { pokemonData, isPokemonLoading } = useContext(PokemonDataContext);
-  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const [isDetailedOpen, setIsDetailedOpen] = useState(false);
-  useEffect(() => {
-    if (!isPokemonLoading) {
-      setInitialLoadComplete(true);
-    }
-  }, [isPokemonLoading]);
+  const localStorageSearchValue = localStorage.getItem(userSearchValue);
+  const {
+    data: pokemonApiData,
+    isLoading: isLoadingPokemonData,
+    isError: pokemonIsError,
+  } = useGetPokemonsQuery({ name: localStorageSearchValue || '' });
+  const pokemonData = mapPokemonData(pokemonApiData);
 
   return (
     <>
-      {isPokemonLoading && <Loading />}
-      {initialLoadComplete && <Pagination />}
-      {!isPokemonLoading && (
+      {isLoadingPokemonData && <Loading />}
+      {!isLoadingPokemonData && <Pagination />}
+      {!isLoadingPokemonData && (
         <>
           <div className={styles.root}>
             <CardsList
               cardsData={pokemonData}
+              isCardsDataError={pokemonIsError}
               setIsDetailedOpen={setIsDetailedOpen}
               isDetailedOpen={isDetailedOpen}
             />

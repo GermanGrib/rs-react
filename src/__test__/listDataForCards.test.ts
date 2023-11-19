@@ -1,5 +1,5 @@
 // Create a mock axios function to simulate API calls
-import { listDataForCards } from '../Utils';
+import { listDataForCards } from '../utils';
 
 jest.mock('../services/pokemonService', () => ({
   axios: jest.fn().mockResolvedValue({

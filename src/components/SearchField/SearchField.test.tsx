@@ -3,8 +3,8 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 
-import * as Utils from '../../Utils';
 import store from '../../store';
+import * as Utils from '../../utils';
 import SearchField from './SearchField';
 
 const fakeLoadData = jest.fn(() => Promise.resolve([]));

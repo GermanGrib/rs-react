@@ -1,6 +1,6 @@
 // Ваш тест
-import { loadData } from '../Utils';
 import { axios } from '../__mocks__/loadData';
+import { loadData } from '../utils';
 
 describe('Test loadData function', () => {
   test('Should loads data without search value', async () => {

@@ -6,7 +6,7 @@ import {
   MOCK_MAX_CARDS_ITEMS,
   mockCardsData,
 } from '../../../__mocks__/cardsData';
-import { CardsList } from './';
+import { CardsList } from './index';
 
 describe('Test CardsList component', () => {
   test('Should verify that the component renders the specified number of cards', () => {

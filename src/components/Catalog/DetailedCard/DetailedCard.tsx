@@ -1,50 +1,27 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { paths } from '../../../router/const';
-import { POKEMON_URL } from '../../../services/pokemonService/variables';
-import { DetailedCardData } from '../../../types/interface';
+import { useGetPokemonsQuery } from '../../../services/rtkQuery/pokemonApi';
+import { DetailedCardProps } from '../../../types/interface';
 import styles from './detailedCard.module.scss';
 
 function DetailedCard(): ReactElement {
   const [searchParams] = useSearchParams();
   const cardId = searchParams.get('detailed');
-  const [pokemonData, setPokemonData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const { data: apiPokemonData, isLoading: dataIsLoading } =
+    useGetPokemonsQuery({ name: String(cardId) });
 
-  async function fetchData(): Promise<void> {
-    try {
-      const response = await fetch(POKEMON_URL + '/' + cardId);
-      if (response.ok) {
-        const data = await response.json();
-        setPokemonData(data);
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
-      }
-    } catch (error) {
-      setIsLoading(false);
-      throw new Error('While fetch data: ');
-    }
-  }
-
-  useEffect(() => {
-    if (searchParams.get('detailed')) {
-      fetchData();
-    }
-  }, []);
-
-  if (isLoading && searchParams.get('detailed')) {
+  if (dataIsLoading && searchParams.get('detailed')) {
     return <div className={styles.loader}>Loading...</div>;
   }
 
-  if (!pokemonData) {
+  if (!apiPokemonData) {
     return <></>;
   }
 
   const destroyComponent = (): void => {
-    setPokemonData(null);
     navigate(paths.home);
   };
 
@@ -55,7 +32,7 @@ function DetailedCard(): ReactElement {
     base_experience,
     types,
     sprites,
-  }: DetailedCardData = pokemonData;
+  }: DetailedCardProps = apiPokemonData as DetailedCardProps;
 
   return (
     <div className={styles.root} data-testid="detailed-card">

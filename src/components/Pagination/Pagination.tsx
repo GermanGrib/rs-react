@@ -1,40 +1,44 @@
-import React, { ReactElement, useContext, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { fetchData } from '../../Utils';
-import { userSearchValue } from '../../const';
-import PokemonDataContext from '../../context/PokemonProvider';
+import { useAppSelector } from '../../hooks/reduxHooks';
+import { useGetPokemonsQuery } from '../../services/rtkQuery/pokemonApi';
 import { ChangePageBtn } from './ChangePageBtn';
 import { PagesCountOptions } from './PagesCountOptions';
 import styles from './pagination.module.scss';
-import { getStorageData, isChangePageBtnDisabled } from './utils';
+import { isChangePageBtnDisabled } from './utils';
 
 function Pagination(): ReactElement {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialPage =
     searchParams.get('page') === null ? 1 : Number(searchParams.get('page'));
   const [page, setPage] = useState(initialPage);
-  const { setPokemonData, isPokemonLoading, setIsPokemonLoading } =
-    useContext(PokemonDataContext);
-  const { limit, totalItems } = getStorageData();
-  const totalPages =
-    totalItems && limit ? Math.ceil(Number(totalItems) / Number(limit)) : '';
-  const isEmptySearchValue = localStorage.getItem(userSearchValue) === '';
+  const searchValue = useAppSelector((state) => state.searchValue.searchValue);
+  const isEmptySearchValue = searchValue === '';
+  const { limit } = useAppSelector((state) => state.itemsPerPage);
+  const searchParamLimit = searchParams.get('limit') || '';
+  const searchParamOffset = searchParams.get('offset') || '';
+  const { isLoading: isPokemonLoading, refetch: refetchPokemons } =
+    useGetPokemonsQuery(
+      {
+        query: {
+          limit: searchParamLimit,
+          offset: searchParamOffset,
+        },
+      },
+      { skip: !searchParamLimit }
+    );
 
   async function onChangePageBtnClick(isPrevious: boolean): Promise<void> {
     const updatedPage = isPrevious ? page - 1 : page + 1;
     const offset = (updatedPage - 1) * Number(limit);
     setPage(updatedPage);
-    await fetchData({
-      offset: offset,
-      setPokemonData: setPokemonData,
-      setIsPokemonLoading: setIsPokemonLoading,
-    });
     setSearchParams({
       limit: limit,
       offset: String(offset),
       page: String(updatedPage),
     });
+    refetchPokemons();
   }
 
   function onChangePagesCountOptions(): void {
@@ -54,7 +58,10 @@ function Pagination(): ReactElement {
             onClick={(): Promise<void> => onChangePageBtnClick(true)}
             isPrevious
             isDisabled={(): boolean =>
-              isChangePageBtnDisabled({ isPrevious: true, currentPage: page })
+              isChangePageBtnDisabled({
+                isPrevious: true,
+                currentPage: page,
+              })
             }
           />
           <div>{page}</div>
@@ -62,11 +69,13 @@ function Pagination(): ReactElement {
             onClick={(): Promise<void> => onChangePageBtnClick(false)}
             isNext
             isDisabled={(): boolean =>
-              isChangePageBtnDisabled({ isPrevious: false, currentPage: page })
+              isChangePageBtnDisabled({
+                isPrevious: false,
+                currentPage: page,
+              })
             }
             data-testid="next-page"
           />
-          <div>Total pages: {totalPages}</div>
         </div>
       )}
     </>

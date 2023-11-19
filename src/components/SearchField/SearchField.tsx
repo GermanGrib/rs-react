@@ -1,9 +1,8 @@
-import React, { ReactElement, SyntheticEvent, useContext, useRef } from 'react';
+import React, { ReactElement, SyntheticEvent, useRef } from 'react';
 
-import { loadData } from '../../Utils';
 import { userSearchValue } from '../../const';
-import PokemonDataContext from '../../context/PokemonProvider';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { useGetPokemonsQuery } from '../../services/rtkQuery/pokemonApi';
 import { setSearchValue } from '../../store/slices/searchValueSlice';
 import styles from './searchField.module.scss';
 
@@ -12,33 +11,22 @@ if (!localStorage.getItem(userSearchValue)) {
 }
 
 function SearchField(): ReactElement {
-  const { isPokemonLoading, setPokemonData, setIsPokemonLoading } =
-    useContext(PokemonDataContext);
   const savedSearchValue = localStorage.getItem(userSearchValue) || '';
   const storeSearchValue = useAppSelector(
     (state) => state.searchValue.searchValue
   );
   const dispatch = useAppDispatch();
   const searchRef = useRef<HTMLInputElement>(null);
+  const queryOptions = { name: storeSearchValue };
+  const { isLoading: isLoadingPokemon, refetch: refetchPokemon } =
+    useGetPokemonsQuery(queryOptions);
 
   async function handleSubmit(e: SyntheticEvent): Promise<void> {
     const searchRefValue = searchRef.current ? searchRef.current.value : '';
     e.preventDefault();
-
-    try {
-      dispatch(setSearchValue(searchRefValue));
-      localStorage.setItem(userSearchValue, searchRefValue);
-      setIsPokemonLoading(true);
-      const pokemonData = await loadData({
-        offset: 0,
-        searchValue: searchRefValue,
-      });
-      setPokemonData(pokemonData);
-    } catch {
-      setPokemonData([]);
-    } finally {
-      setIsPokemonLoading(false);
-    }
+    dispatch(setSearchValue(searchRefValue));
+    localStorage.setItem(userSearchValue, searchRefValue);
+    refetchPokemon();
   }
 
   return (
@@ -55,7 +43,7 @@ function SearchField(): ReactElement {
           type="search"
           placeholder="Search..."
           autoFocus
-          disabled={isPokemonLoading}
+          disabled={isLoadingPokemon}
         />
         <button className={styles.button} type="submit">
           Search

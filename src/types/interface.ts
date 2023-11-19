@@ -1,44 +1,23 @@
 export interface CardProps {
-  cardTitle: string;
-  imgSrc: string;
-  weight: string;
-  height: string;
-  experience: string;
+  name: string;
+  url?: string;
   id?: string | number;
 }
 
-interface ISprites {
-  front_default: string;
-}
-
-export interface IPokemonData {
+export interface DetailedCardProps {
   name: string;
   weight: string;
   height: string;
   base_experience: string;
   id: string;
-  sprites: ISprites;
-}
-
-export interface DetailedCardData extends IPokemonData {
+  sprites: { front_default: string };
   types: { type: { name: string } }[];
 }
 
-export interface IPokemonFullResponse {
-  count: number;
-  next: null | string;
-  previous: null | string;
-  results: { name: string; url: string }[];
-}
-
-export interface FetchData {
-  offset: number;
-  setIsPokemonLoading: (value: boolean) => void;
-  setPokemonData: (value: CardProps[]) => void;
-  options?: QueryOptions;
-}
-
-export interface QueryOptions {
-  itemsLimit: string | null;
-  offset: string | null;
+export interface QueryPokemonOptions {
+  query?: {
+    limit: string | null;
+    offset: string | null;
+  };
+  name?: string;
 }

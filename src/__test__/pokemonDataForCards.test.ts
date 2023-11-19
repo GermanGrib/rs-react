@@ -1,5 +1,5 @@
-import { pokemonDataForCards } from '../Utils';
 import { IPokemonData } from '../types/interface';
+import { pokemonDataForCards } from '../utils';
 
 describe('Test pokemonDataForCards function', () => {
   test('Should extract the necessary card data from the full pokemon data', () => {

@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import DetailedCard from './DetailedCard';
 
-// Предположим, что ваш запрос на получение данных возвращает данные для тестирования
 const mockApiPokemonData = {
   name: 'Pikachu',
   weight: '60',

@@ -14,7 +14,7 @@ function Catalog(): ReactElement {
   const localStorageSearchValue = localStorage.getItem(userSearchValue);
   const {
     data: pokemonApiData,
-    isLoading: isLoadingPokemonData,
+    isFetching: isLoadingPokemonData,
     isError: pokemonIsError,
   } = useGetPokemonsQuery({ name: localStorageSearchValue || '' });
   const pokemonData = mapPokemonData(pokemonApiData);

@@ -1,8 +1,7 @@
 import React, { ReactElement, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 
-import { userSearchValue } from '../../const';
-import { useAppDispatch } from '../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { useGetPokemonsQuery } from '../../services/rtkQuery/pokemonApi';
 import { setLoadingMainPage } from '../../store/slices/loadingMainPageSlice';
 import { mapPokemonData } from '../../utils';
@@ -13,12 +12,20 @@ import styles from './catalog.module.scss';
 
 function Catalog(): ReactElement {
   const [isDetailedOpen, setIsDetailedOpen] = useState(false);
-  const localStorageSearchValue = localStorage.getItem(userSearchValue);
+  const storeSearchValue = useAppSelector(
+    (state) => state.searchValue.searchValue
+  );
+  const [searchParams] = useSearchParams();
+  const limit = searchParams.get('limit');
+  const offset = searchParams.get('offset');
   const {
     data: pokemonApiData,
     isFetching: isLoadingPokemonData,
     isError: pokemonIsError,
-  } = useGetPokemonsQuery({ name: localStorageSearchValue || '' });
+  } = useGetPokemonsQuery({
+    name: storeSearchValue || '',
+    query: { limit, offset },
+  });
   const pokemonData = mapPokemonData(pokemonApiData);
   const dispatch = useAppDispatch();
   dispatch(setLoadingMainPage(isLoadingPokemonData));

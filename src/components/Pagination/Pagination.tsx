@@ -2,7 +2,6 @@ import React, { ReactElement, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { useAppSelector } from '../../hooks/reduxHooks';
-import { useGetPokemonsQuery } from '../../services/rtkQuery/pokemonApi';
 import { ChangePageBtn } from './ChangePageBtn';
 import { PagesCountOptions } from './PagesCountOptions';
 import styles from './pagination.module.scss';
@@ -16,18 +15,9 @@ function Pagination(): ReactElement {
   const searchValue = useAppSelector((state) => state.searchValue.searchValue);
   const isEmptySearchValue = searchValue === '';
   const { limit } = useAppSelector((state) => state.itemsPerPage);
-  const searchParamLimit = searchParams.get('limit') || '';
-  const searchParamOffset = searchParams.get('offset') || '';
-  const { isLoading: isPokemonLoading, refetch: refetchPokemons } =
-    useGetPokemonsQuery(
-      {
-        query: {
-          limit: searchParamLimit,
-          offset: searchParamOffset,
-        },
-      },
-      { skip: !searchParamLimit }
-    );
+  const isPokemonLoading = useAppSelector(
+    (state) => state.loadingMainPage.loadingMainPage
+  );
 
   async function onChangePageBtnClick(isPrevious: boolean): Promise<void> {
     const updatedPage = isPrevious ? page - 1 : page + 1;
@@ -38,7 +28,6 @@ function Pagination(): ReactElement {
       offset: String(offset),
       page: String(updatedPage),
     });
-    refetchPokemons();
   }
 
   function onChangePagesCountOptions(): void {

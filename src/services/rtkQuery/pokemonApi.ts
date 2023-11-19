@@ -14,12 +14,6 @@ export const pokemonApi = createApi({
         params: args.query,
       }),
     }),
-    getEachPokemon: builder.query<PokemonResponses, QueryPokemonOptions>({
-      query: (args: QueryPokemonOptions) => ({
-        url: `/${args.name ? args.name : ''}`,
-        params: args.query,
-      }),
-    }),
   }),
 });
 

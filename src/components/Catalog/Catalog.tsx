@@ -2,7 +2,9 @@ import React, { ReactElement, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { userSearchValue } from '../../const';
+import { useAppDispatch } from '../../hooks/reduxHooks';
 import { useGetPokemonsQuery } from '../../services/rtkQuery/pokemonApi';
+import { setLoadingMainPage } from '../../store/slices/loadingMainPageSlice';
 import { mapPokemonData } from '../../utils';
 import { Loading } from '../Loading';
 import { Pagination } from '../Pagination';
@@ -18,6 +20,8 @@ function Catalog(): ReactElement {
     isError: pokemonIsError,
   } = useGetPokemonsQuery({ name: localStorageSearchValue || '' });
   const pokemonData = mapPokemonData(pokemonApiData);
+  const dispatch = useAppDispatch();
+  dispatch(setLoadingMainPage(isLoadingPokemonData));
 
   return (
     <>

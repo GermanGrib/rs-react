@@ -1,0 +1,57 @@
+@import '../../../styles/common/index';
+
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  padding: 3rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 400px;
+  align-items: center;
+  background-clip: padding-box;
+  text-align: center;
+  color: #f1f3f3;
+  background-image: linear-gradient(
+    135deg,
+    rgba(117, 46, 124, 0.35),
+    rgba(115, 74, 88, 0.1) 15%,
+    #1b2028 20%,
+    #1b2028 100%
+  );
+  border: 3px solid transparent;
+  border-radius: 1.6rem;
+}
+
+.list {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+}
+
+.button {
+  width: 100%;
+  cursor: pointer;
+  transition: opacity $transition-set;
+
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  font-size: 5rem;
+  font-weight: 700;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  color: $primary-light;
+  text-align: center;
+}

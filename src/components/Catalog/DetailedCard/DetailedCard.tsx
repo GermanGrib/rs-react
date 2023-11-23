@@ -8,7 +8,7 @@ import styles from './detailedCard.module.scss';
 
 interface DetailedCardProps {
   data: DetailedCardFields;
-  errorMessage: string;
+  errorMessage?: string;
 }
 
 function DetailedCard({ data }: DetailedCardProps): ReactElement {

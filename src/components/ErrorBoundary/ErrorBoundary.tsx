@@ -1,4 +1,4 @@
-import { Component, ReactElement, ReactNode } from 'react';
+import React, { Component, ReactElement, ReactNode } from 'react';
 
 import { ErrorBoundaryBody } from './ErrorBoundaryBody';
 

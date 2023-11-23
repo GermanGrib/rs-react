@@ -30,7 +30,6 @@
     "react-hooks/rules-of-hooks": "error",
     "@typescript-eslint/explicit-function-return-type": "error",
     "no-implicit-coercion": "error",
-    //    "react-hooks/exhaustive-deps": "warn",
     "comma-dangle": [
       "error",
       "only-multiline"

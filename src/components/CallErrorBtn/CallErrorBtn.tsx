@@ -1,12 +1,14 @@
+import { useRouter } from 'next/router';
 import React, { ReactElement, useState } from 'react';
 
 import styles from './callErrorBtn.module.scss';
 
 function CallErrorBtn(): ReactElement {
   const [isError, setIsError] = useState(false);
+  const router = useRouter();
 
   if (isError) {
-    throw new Error('RS School Error task');
+    router.push('/errorpage');
   }
 
   return (

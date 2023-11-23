@@ -7,10 +7,9 @@ import PagesCountOptions from './PagesCountOptions';
 
 describe('Test PagesCountOptions component', () => {
   test('Should render select element with default value', () => {
-    const onChange = jest.fn();
     render(
       <Provider store={store}>
-        <PagesCountOptions onChange={onChange} />
+        <PagesCountOptions />
       </Provider>
     );
     const selectElement = screen.getByRole('combobox') as HTMLSelectElement;
@@ -23,7 +22,7 @@ describe('Test PagesCountOptions component', () => {
     const onChange = jest.fn();
     render(
       <Provider store={store}>
-        <PagesCountOptions onChange={onChange} />
+        <PagesCountOptions />
       </Provider>
     );
     const selectElement = screen.getByRole('combobox') as HTMLSelectElement;

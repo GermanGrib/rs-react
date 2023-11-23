@@ -1,4 +1,5 @@
-import React, { ReactElement } from 'react';
+import { useRouter } from 'next/router';
+import React, { ReactElement, useRef } from 'react';
 
 import { PokemonGeneralResponse } from '../../../services/types/interface';
 import { Card } from '../Card';
@@ -6,47 +7,29 @@ import styles from './cardsList.module.scss';
 
 interface CardsListProps {
   cardsData: PokemonGeneralResponse;
-  // isCardsDataError: boolean;
-  // setIsDetailedOpen: Dispatch<SetStateAction<boolean>>;
-  // isDetailedOpen: boolean;
 }
 
-function CardsList({
-  cardsData, // isCardsDataError,
-  // isDetailedOpen,
-} // setIsDetailedOpen,
-: CardsListProps): ReactElement {
-  // const navigate = useNavigate();
-  // const [searchParams] = useSearchParams();
+function CardsList({ cardsData }: CardsListProps): ReactElement {
+  const listRef = useRef(null);
+  const router = useRouter();
+  const { query } = router;
 
-  // useEffect(() => {
-  //   if (searchParams.size === 0) {
-  //     setIsDetailedOpen(false);
-  //   }
-  // }, [searchParams]);
-
-  // function handleItemClick(): void {
-  //   if (!isDetailedOpen) {
-  //     setIsDetailedOpen(true);
-  //   }
-  // }
-  //
-  // function handleListClick(): void {
-  //   if (isDetailedOpen) {
-  //     setIsDetailedOpen(false);
-  //   }
-  // }
+  function handleListClick(): void {
+    if (query.id) {
+      delete query.id;
+      router.push({ pathname: '/', query });
+    }
+  }
 
   return (
-    <ul className={styles.list} onClick={(): void => {}}>
+    <ul className={styles.list} onClick={handleListClick} ref={listRef}>
       {cardsData.results.map((el) => {
         return (
-          <li key={el.name} onClick={(): void => {}}>
+          <li key={el.name}>
             <Card name={el.name} id={el.name} />
           </li>
         );
       })}
-      {/*{isCardsDataError && <NoInfo />}*/}
     </ul>
   );
 }

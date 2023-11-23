@@ -1,46 +1,29 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 
-import { DEFAULT_QUERY_CATALOG, maxItemsPerPage } from '../../const';
-import { useAppSelector } from '../../hooks/reduxHooks';
+import { DEFAULT_QUERY_CATALOG } from '../../const';
 import { ChangePageBtn } from './ChangePageBtn';
 import { PagesCountOptions } from './PagesCountOptions';
 import styles from './pagination.module.scss';
 
 function Pagination(): ReactElement {
   const router = useRouter();
-  const { page } = router.query;
-  const { offset: queryOffset } = router.query;
-  const { limit } = useAppSelector((state) => state.itemsPerPage);
+  const { query } = router;
+  const { page = DEFAULT_QUERY_CATALOG.page } = query;
 
   async function onChangePageBtnClick(isPrevious: boolean): Promise<void> {
-    if (page) {
-      const updatedPage = isPrevious ? Number(page) - 1 : Number(page) + 1;
-      const offset = (updatedPage - 1) * Number(limit);
-      router.push({
-        query: {
-          page: String(updatedPage),
-          offset,
-          limit,
-        },
-      });
-    }
-  }
-
-  function onChangePagesCountOptions(): void {
-    const limit = sessionStorage.getItem(maxItemsPerPage);
-    router.push({
-      query: {
-        page: DEFAULT_QUERY_CATALOG.page,
-        offset: queryOffset,
-        limit,
-      },
+    query.page = isPrevious
+      ? String(Number(page) - 1)
+      : String(Number(page) + 1);
+    await router.push({
+      pathname: router.pathname,
+      query,
     });
   }
 
   return (
     <div className={styles.container}>
-      <PagesCountOptions onChange={onChangePagesCountOptions} />
+      <PagesCountOptions />
       <ChangePageBtn
         onClick={(): Promise<void> => onChangePageBtnClick(true)}
         isPrevious

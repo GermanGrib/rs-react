@@ -9,7 +9,6 @@
     "start": "next start",
     "lint": "next lint",
     "format:fix": "prettier --write \"**/*.{html,css,scss,tsx,ts,js,jsx}\"",
-    "preview": "vite preview",
     "prepare": "husky install",
     "test": "jest --config jest.config.json",
     "coverage": "jest --coverage"
@@ -57,8 +56,6 @@
     "redux-mock-store": "^1.5.4",
     "sass": "^1.69.4",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.0.2",
-    "vite": "^4.4.5",
-    "vite-plugin-env": "^1.0.1"
+    "typescript": "^5.0.2"
   }
 }

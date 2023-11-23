@@ -1,32 +1,22 @@
+import { useRouter } from 'next/router';
 import React, { ChangeEvent, ReactElement } from 'react';
 
-import { maxItemsPerPage } from '../../../const';
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
-import { setMaxItemsPerPage } from '../../../store/slices/itemsPerPageSlice';
+import { DEFAULT_QUERY_CATALOG } from '../../../const';
 
-interface PagesCountProps {
-  onChange: () => void;
-}
-
-function PagesCountOptions({ onChange }: PagesCountProps): ReactElement {
-  const selectedValue = useAppSelector((state) => state.itemsPerPage.limit);
-  const dispatch = useAppDispatch();
+function PagesCountOptions(): ReactElement {
+  const router = useRouter();
+  const { query } = router;
 
   async function handleSelectChange(
     e: ChangeEvent<HTMLSelectElement>
   ): Promise<void> {
-    const currentValue = e.target.value;
-    sessionStorage.setItem(maxItemsPerPage, currentValue);
-    dispatch(setMaxItemsPerPage(currentValue));
-    onChange();
+    query.limit = e.target.value;
+    query.page = DEFAULT_QUERY_CATALOG.page;
+    router.push({ query });
   }
 
   return (
-    <select
-      id="Items"
-      onChange={(e): Promise<void> => handleSelectChange(e)}
-      value={selectedValue}
-    >
+    <select id="Items" onChange={handleSelectChange} value={query.limit}>
       <option value="20">20</option>
       <option value="40">40</option>
       <option value="60">60</option>

@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 
-import { paths } from '../../../router/const';
 import styles from './errorBoundaryBody.module.scss';
 
 interface ErrorBodyProps {
@@ -19,7 +18,7 @@ function ErrorBoundaryBody({ error }: ErrorBodyProps): ReactElement {
         <a
           className={styles.link}
           onClick={(): void => window.location.reload()}
-          href={paths.home}
+          href="/"
         >
           Thankfully, we have a Frontend developer - just click on me, silly.
         </a>

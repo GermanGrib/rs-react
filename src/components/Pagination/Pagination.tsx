@@ -1,6 +1,7 @@
-import React, { ReactElement, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useRouter } from 'next/router';
+import React, { ReactElement } from 'react';
 
+import { DEFAULT_QUERY_CATALOG, maxItemsPerPage } from '../../const';
 import { useAppSelector } from '../../hooks/reduxHooks';
 import { ChangePageBtn } from './ChangePageBtn';
 import { PagesCountOptions } from './PagesCountOptions';
@@ -8,10 +9,9 @@ import styles from './pagination.module.scss';
 import { isChangePageBtnDisabled } from './utils';
 
 function Pagination(): ReactElement {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const initialPage =
-    searchParams.get('page') === null ? 1 : Number(searchParams.get('page'));
-  const [page, setPage] = useState(initialPage);
+  const router = useRouter();
+  const { page } = router.query;
+  const { offset: queryOffset } = router.query;
   const searchValue = useAppSelector((state) => state.searchValue.searchValue);
   const isEmptySearchValue = searchValue === '';
   const { limit } = useAppSelector((state) => state.itemsPerPage);
@@ -20,18 +20,28 @@ function Pagination(): ReactElement {
   );
 
   async function onChangePageBtnClick(isPrevious: boolean): Promise<void> {
-    const updatedPage = isPrevious ? page - 1 : page + 1;
-    const offset = (updatedPage - 1) * Number(limit);
-    setPage(updatedPage);
-    setSearchParams({
-      limit: limit,
-      offset: String(offset),
-      page: String(updatedPage),
-    });
+    if (page) {
+      const updatedPage = isPrevious ? Number(page) - 1 : Number(page) + 1;
+      const offset = (updatedPage - 1) * Number(limit);
+      router.push({
+        query: {
+          page: String(updatedPage),
+          offset,
+          limit,
+        },
+      });
+    }
   }
 
   function onChangePagesCountOptions(): void {
-    setPage(1);
+    const limit = sessionStorage.getItem(maxItemsPerPage);
+    router.push({
+      query: {
+        page: DEFAULT_QUERY_CATALOG.page,
+        offset: queryOffset,
+        limit,
+      },
+    });
   }
 
   return (
@@ -49,7 +59,7 @@ function Pagination(): ReactElement {
             isDisabled={(): boolean =>
               isChangePageBtnDisabled({
                 isPrevious: true,
-                currentPage: page,
+                currentPage: page ? Number(page) : 1,
               })
             }
           />

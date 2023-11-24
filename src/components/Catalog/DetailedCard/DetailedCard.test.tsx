@@ -1,7 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 
 import DetailedCard from './DetailedCard';
@@ -28,11 +27,9 @@ const mockStore = configureStore();
 describe('Test DetailedCard component', () => {
   test('Should: renders detailed card with data', async () => {
     render(
-      <Router>
-        <Provider store={mockStore({})}>
-          <DetailedCard />
-        </Provider>
-      </Router>
+      <Provider store={mockStore({})}>
+        <DetailedCard />
+      </Provider>
     );
 
     await waitFor(() =>

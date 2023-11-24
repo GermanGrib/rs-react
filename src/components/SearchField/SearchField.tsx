@@ -1,14 +1,9 @@
 import React, { ReactElement, SyntheticEvent, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 import { userSearchValue } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { setSearchValue } from '../../store/slices/searchValueSlice';
 import styles from './searchField.module.scss';
-
-if (!localStorage.getItem(userSearchValue)) {
-  localStorage.setItem(userSearchValue, '');
-}
 
 function SearchField(): ReactElement {
   const storeSearchValue = useAppSelector(
@@ -19,14 +14,15 @@ function SearchField(): ReactElement {
   const isLoadingPokemon = useAppSelector(
     (state) => state.loadingMainPage.loadingMainPage
   );
-  const [, setSearchParams] = useSearchParams();
+
+  // const [, setSearchParams] = useSearchParams();
 
   async function handleSubmit(e: SyntheticEvent): Promise<void> {
     const searchRefValue = searchRef.current ? searchRef.current.value : '';
     e.preventDefault();
     dispatch(setSearchValue(searchRefValue));
     localStorage.setItem(userSearchValue, searchRefValue);
-    setSearchParams('');
+    // setSearchParams('');
   }
 
   return (

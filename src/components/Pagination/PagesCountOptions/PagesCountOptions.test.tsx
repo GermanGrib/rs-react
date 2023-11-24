@@ -1,7 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
 
 import store from '../../../store';
 import PagesCountOptions from './PagesCountOptions';
@@ -11,9 +10,7 @@ describe('Test PagesCountOptions component', () => {
     const onChange = jest.fn();
     render(
       <Provider store={store}>
-        <MemoryRouter>
-          <PagesCountOptions onChange={onChange} />
-        </MemoryRouter>
+        <PagesCountOptions onChange={onChange} />
       </Provider>
     );
     const selectElement = screen.getByRole('combobox') as HTMLSelectElement;
@@ -26,9 +23,7 @@ describe('Test PagesCountOptions component', () => {
     const onChange = jest.fn();
     render(
       <Provider store={store}>
-        <MemoryRouter>
-          <PagesCountOptions onChange={onChange} />
-        </MemoryRouter>
+        <PagesCountOptions onChange={onChange} />
       </Provider>
     );
     const selectElement = screen.getByRole('combobox') as HTMLSelectElement;

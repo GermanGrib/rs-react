@@ -2,23 +2,22 @@ import { Component, ReactElement, ReactNode } from 'react';
 
 import { ErrorBoundaryBody } from './ErrorBoundaryBody';
 
-interface IErrorBoundary {
-  fallback: ReactElement;
+interface ErrorBoundaryProps {
   children: ReactNode;
 }
 
-interface IErrorState {
+interface ErrorState {
   hasError: boolean;
   error: null | Error;
 }
 
-class ErrorBoundary extends Component<IErrorBoundary, IErrorState> {
-  constructor(props: IErrorBoundary) {
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null };
   }
 
-  static getDerivedStateFromError(error: Error): IErrorState {
+  static getDerivedStateFromError(error: Error): ErrorState {
     return { hasError: true, error };
   }
 

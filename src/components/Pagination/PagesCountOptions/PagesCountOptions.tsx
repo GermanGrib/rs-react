@@ -1,5 +1,4 @@
 import React, { ChangeEvent, ReactElement } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 import { maxItemsPerPage } from '../../../const';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
@@ -12,8 +11,6 @@ interface PagesCountProps {
 function PagesCountOptions({ onChange }: PagesCountProps): ReactElement {
   const selectedValue = useAppSelector((state) => state.itemsPerPage.limit);
   const dispatch = useAppDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const maxItemsOnPage = searchParams.get('limit');
 
   async function handleSelectChange(
     e: ChangeEvent<HTMLSelectElement>
@@ -21,7 +18,6 @@ function PagesCountOptions({ onChange }: PagesCountProps): ReactElement {
     const currentValue = e.target.value;
     sessionStorage.setItem(maxItemsPerPage, currentValue);
     dispatch(setMaxItemsPerPage(currentValue));
-    setSearchParams({ limit: currentValue, offset: '0', page: '1' });
     onChange();
   }
 
@@ -29,7 +25,7 @@ function PagesCountOptions({ onChange }: PagesCountProps): ReactElement {
     <select
       id="Items"
       onChange={(e): Promise<void> => handleSelectChange(e)}
-      value={maxItemsOnPage ? maxItemsOnPage : selectedValue}
+      value={selectedValue}
     >
       <option value="20">20</option>
       <option value="40">40</option>

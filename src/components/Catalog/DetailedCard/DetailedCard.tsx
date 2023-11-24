@@ -1,23 +1,21 @@
+import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useAppDispatch } from '../../../hooks/reduxHooks';
-import { paths } from '../../../router/const';
 import { useGetPokemonsQuery } from '../../../services/rtkQuery/pokemonApi';
 import { setLoadingDetailedPage } from '../../../store/slices/loadingDetailedPageSlice';
 import { DetailedCardProps } from '../../../types/interface';
 import styles from './detailedCard.module.scss';
 
 function DetailedCard(): ReactElement {
-  const [searchParams] = useSearchParams();
-  const cardId = searchParams.get('detailed');
-  const navigate = useNavigate();
-  const { data: apiPokemonData, isLoading: dataIsLoading } =
-    useGetPokemonsQuery({ name: String(cardId) });
+  const router = useRouter();
+  const { detailed: pokemonId } = router.query;
+  const { data: apiPokemonData, isFetching: dataIsLoading } =
+    useGetPokemonsQuery({ name: String(pokemonId) });
   const dispatch = useAppDispatch();
   dispatch(setLoadingDetailedPage(dataIsLoading));
 
-  if (dataIsLoading && searchParams.get('detailed')) {
+  if (dataIsLoading && pokemonId) {
     return <div className={styles.loader}>Loading...</div>;
   }
 
@@ -26,7 +24,7 @@ function DetailedCard(): ReactElement {
   }
 
   const destroyComponent = (): void => {
-    navigate(paths.home);
+    router.push('/');
   };
 
   const {

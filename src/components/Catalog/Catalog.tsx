@@ -1,13 +1,15 @@
-import React, { ReactElement, useState } from 'react';
-import { Outlet, useSearchParams } from 'react-router-dom';
+import { useRouter } from 'next/router';
+import React, { ReactElement, useEffect, useState } from 'react';
 
+import { DEFAULT_QUERY_CATALOG } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { useGetPokemonsQuery } from '../../services/rtkQuery/pokemonApi';
 import { setLoadingMainPage } from '../../store/slices/loadingMainPageSlice';
-import { mapPokemonData } from '../../utils';
+import { mapPokemonData, transformQueryParamToStringOrNull } from '../../utils';
 import { Loading } from '../Loading';
 import { Pagination } from '../Pagination';
 import { CardsList } from './CardsList';
+import { DetailedCard } from './DetailedCard';
 import styles from './catalog.module.scss';
 
 function Catalog(): ReactElement {
@@ -15,20 +17,33 @@ function Catalog(): ReactElement {
   const storeSearchValue = useAppSelector(
     (state) => state.searchValue.searchValue
   );
-  const [searchParams] = useSearchParams();
-  const limit = searchParams.get('limit');
-  const offset = searchParams.get('offset');
+  const router = useRouter();
+  const { limit, offset } = router.query;
+  const newLimit = transformQueryParamToStringOrNull(limit);
+  const newOffset = transformQueryParamToStringOrNull(offset);
   const {
     data: pokemonApiData,
     isFetching: isLoadingPokemonData,
     isError: pokemonIsError,
   } = useGetPokemonsQuery({
     name: storeSearchValue || '',
-    query: { limit, offset },
+    query: { limit: newLimit, offset: newOffset },
   });
   const pokemonData = mapPokemonData(pokemonApiData);
   const dispatch = useAppDispatch();
   dispatch(setLoadingMainPage(isLoadingPokemonData));
+
+  useEffect(() => {
+    if (!limit) {
+      router.push({
+        query: {
+          page: DEFAULT_QUERY_CATALOG.page,
+          limit: DEFAULT_QUERY_CATALOG.limit,
+          offset: DEFAULT_QUERY_CATALOG.offset,
+        },
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -43,7 +58,7 @@ function Catalog(): ReactElement {
               setIsDetailedOpen={setIsDetailedOpen}
               isDetailedOpen={isDetailedOpen}
             />
-            {isDetailedOpen && <Outlet />}
+            {isDetailedOpen && <DetailedCard />}
           </div>
         </>
       )}

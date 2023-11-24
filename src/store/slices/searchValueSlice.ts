@@ -1,11 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { userSearchValue } from '../../const';
-
 const searchValueSlice = createSlice({
   name: 'searchValue',
   initialState: {
-    searchValue: localStorage.getItem(userSearchValue) || '',
+    searchValue: '',
   },
   reducers: {
     setSearchValue(state, action: PayloadAction<string>) {

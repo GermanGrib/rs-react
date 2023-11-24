@@ -1,12 +1,16 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
-import { Link } from 'react-router-dom';
 
 import { CardProps } from '../../../types/interface';
 import styles from './card.module.scss';
 
 function Card({ name, id }: CardProps): ReactElement {
+  const router = useRouter();
+  const href = router.asPath.replace(/&detailed=[^&]*/, '');
+
   return (
-    <Link to={`?detailed=${id}`} className={styles.profile}>
+    <Link href={`${href}&detailed=${id}`} className={styles.profile}>
       <div className={styles.profileImage}>
         <img className={styles.img} src="/pokemon.webp" alt="card image" />
       </div>

@@ -1,6 +1,5 @@
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 
 import {
   MOCK_MAX_CARDS_ITEMS,
@@ -11,14 +10,12 @@ import { CardsList } from './index';
 describe('Test CardsList component', () => {
   test('Should verify that the component renders the specified number of cards', () => {
     const { container } = render(
-      <MemoryRouter>
-        <CardsList
-          cardsData={mockCardsData}
-          setIsDetailedOpen={(): void => {}}
-          isDetailedOpen={false}
-          isCardsDataError={false}
-        />
-      </MemoryRouter>
+      <CardsList
+        cardsData={mockCardsData}
+        setIsDetailedOpen={(): void => {}}
+        isDetailedOpen={false}
+        isCardsDataError={false}
+      />
     );
 
     const ulElement = container.querySelector('ul');
@@ -30,14 +27,12 @@ describe('Test CardsList component', () => {
 
   test('Should check that an appropriate message is displayed if no cards are present', () => {
     const { getByText } = render(
-      <MemoryRouter>
-        <CardsList
-          cardsData={[]}
-          setIsDetailedOpen={(): void => {}}
-          isDetailedOpen={false}
-          isCardsDataError={true}
-        />
-      </MemoryRouter>
+      <CardsList
+        cardsData={[]}
+        setIsDetailedOpen={(): void => {}}
+        isDetailedOpen={false}
+        isCardsDataError={true}
+      />
     );
 
     const noCardsMessage = getByText('There is no data for this query');
@@ -48,14 +43,12 @@ describe('Test CardsList component', () => {
     const setIsDetailedOpen = jest.fn();
 
     const { getByText } = render(
-      <MemoryRouter>
-        <CardsList
-          cardsData={mockCardsData}
-          setIsDetailedOpen={setIsDetailedOpen}
-          isDetailedOpen={false}
-          isCardsDataError={false}
-        />
-      </MemoryRouter>
+      <CardsList
+        cardsData={mockCardsData}
+        setIsDetailedOpen={setIsDetailedOpen}
+        isDetailedOpen={false}
+        isCardsDataError={false}
+      />
     );
 
     const liElement = getByText('Title 20');

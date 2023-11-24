@@ -14,3 +14,16 @@ export function mapPokemonData(
     return [data];
   }
 }
+
+export function transformQueryParamToStringOrNull(
+  queryParam: string | string[] | undefined
+): string | null {
+  if (queryParam) {
+    if (Array.isArray(queryParam)) {
+      return queryParam[0];
+    } else if (typeof queryParam === 'string') {
+      return queryParam;
+    }
+  }
+  return null;
+}

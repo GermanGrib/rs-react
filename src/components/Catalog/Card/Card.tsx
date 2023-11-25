@@ -7,10 +7,10 @@ import styles from './card.module.scss';
 
 function Card({ name, id }: CardProps): ReactElement {
   const router = useRouter();
-  const href = router.asPath.replace(/&detailed=[^&]*/, '');
+  const href = router.asPath.replace(/\/([^/]+)\?/, '/?');
 
   return (
-    <Link href={`${href}&detailed=${id}`} className={styles.profile}>
+    <Link href={`${id}${href}`} className={styles.profile}>
       <div className={styles.profileImage}>
         <img className={styles.img} src="/pokemon.webp" alt="card image" />
       </div>

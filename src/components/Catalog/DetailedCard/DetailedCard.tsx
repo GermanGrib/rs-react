@@ -1,41 +1,27 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 
-import { useAppDispatch } from '../../../hooks/reduxHooks';
-import { useGetPokemonsQuery } from '../../../services/rtkQuery/pokemonApi';
-import { setLoadingDetailedPage } from '../../../store/slices/loadingDetailedPageSlice';
-import { DetailedCardProps } from '../../../types/interface';
+import { DEFAULT_QUERY_CATALOG } from '../../../const';
+import { DetailedCardFields } from '../../../types/interface';
+import { NoInfo } from '../../NoInfo';
 import styles from './detailedCard.module.scss';
 
-function DetailedCard(): ReactElement {
+interface DetailedCardProps {
+  data: DetailedCardFields;
+  errorMessage: string;
+}
+
+function DetailedCard({ data }: DetailedCardProps): ReactElement {
   const router = useRouter();
-  const { detailed: pokemonId } = router.query;
-  const { data: apiPokemonData, isFetching: dataIsLoading } =
-    useGetPokemonsQuery({ name: String(pokemonId) });
-  const dispatch = useAppDispatch();
-  dispatch(setLoadingDetailedPage(dataIsLoading));
-
-  if (dataIsLoading && pokemonId) {
-    return <div className={styles.loader}>Loading...</div>;
-  }
-
-  if (!apiPokemonData) {
-    return <></>;
+  if (data === undefined) {
+    return <NoInfo />;
   }
 
   const destroyComponent = (): void => {
-    router.push('/');
+    router.push({ pathname: '/', query: DEFAULT_QUERY_CATALOG });
   };
 
-  const {
-    name,
-    weight,
-    height,
-    base_experience,
-    types,
-    sprites,
-  }: DetailedCardProps = apiPokemonData as DetailedCardProps;
-
+  const { name, sprites, weight, height, base_experience, types } = data;
   return (
     <div className={styles.root} data-testid="detailed-card">
       <div className={styles.content}>

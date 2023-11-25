@@ -6,18 +6,12 @@ import { useAppSelector } from '../../hooks/reduxHooks';
 import { ChangePageBtn } from './ChangePageBtn';
 import { PagesCountOptions } from './PagesCountOptions';
 import styles from './pagination.module.scss';
-import { isChangePageBtnDisabled } from './utils';
 
 function Pagination(): ReactElement {
   const router = useRouter();
   const { page } = router.query;
   const { offset: queryOffset } = router.query;
-  const searchValue = useAppSelector((state) => state.searchValue.searchValue);
-  const isEmptySearchValue = searchValue === '';
   const { limit } = useAppSelector((state) => state.itemsPerPage);
-  const isPokemonLoading = useAppSelector(
-    (state) => state.loadingMainPage.loadingMainPage
-  );
 
   async function onChangePageBtnClick(isPrevious: boolean): Promise<void> {
     if (page) {
@@ -45,34 +39,21 @@ function Pagination(): ReactElement {
   }
 
   return (
-    <>
-      {isEmptySearchValue && (
-        <div
-          className={`${styles.container} ${
-            isPokemonLoading ? styles.disable : ''
-          }`}
-        >
-          <PagesCountOptions onChange={onChangePagesCountOptions} />
-          <ChangePageBtn
-            onClick={(): Promise<void> => onChangePageBtnClick(true)}
-            isPrevious
-            isDisabled={(): boolean =>
-              isChangePageBtnDisabled({
-                isPrevious: true,
-                currentPage: page ? Number(page) : 1,
-              })
-            }
-          />
-          <div>{page}</div>
-          <ChangePageBtn
-            onClick={(): Promise<void> => onChangePageBtnClick(false)}
-            isNext
-            isDisabled={(): boolean => false}
-            data-testid="next-page"
-          />
-        </div>
-      )}
-    </>
+    <div className={styles.container}>
+      <PagesCountOptions onChange={onChangePagesCountOptions} />
+      <ChangePageBtn
+        onClick={(): Promise<void> => onChangePageBtnClick(true)}
+        isPrevious
+        isDisabled={(): boolean => Number(page) === 1}
+      />
+      <div>{page}</div>
+      <ChangePageBtn
+        onClick={(): Promise<void> => onChangePageBtnClick(false)}
+        isNext
+        isDisabled={(): boolean => false}
+        data-testid="next-page"
+      />
+    </div>
   );
 }
 

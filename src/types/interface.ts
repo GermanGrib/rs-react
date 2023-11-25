@@ -4,7 +4,7 @@ export interface CardProps {
   id?: string | number;
 }
 
-export interface DetailedCardProps {
+export interface DetailedCardFields {
   name: string;
   weight: string;
   height: string;

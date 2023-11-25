@@ -1,23 +1,21 @@
-import React, { Dispatch, ReactElement, SetStateAction } from 'react';
+import React, { ReactElement } from 'react';
 
-import { CardProps, DetailedCardProps } from '../../../types/interface';
-import { NoInfo } from '../../NoInfo';
+import { PokemonGeneralResponse } from '../../../services/types/interface';
 import { Card } from '../Card';
 import styles from './cardsList.module.scss';
 
 interface CardsListProps {
-  cardsData: CardProps[] | DetailedCardProps[];
-  isCardsDataError: boolean;
-  setIsDetailedOpen: Dispatch<SetStateAction<boolean>>;
-  isDetailedOpen: boolean;
+  cardsData: PokemonGeneralResponse;
+  // isCardsDataError: boolean;
+  // setIsDetailedOpen: Dispatch<SetStateAction<boolean>>;
+  // isDetailedOpen: boolean;
 }
 
 function CardsList({
-  cardsData,
-  isCardsDataError,
-  setIsDetailedOpen,
-  isDetailedOpen,
-}: CardsListProps): ReactElement {
+  cardsData, // isCardsDataError,
+  // isDetailedOpen,
+} // setIsDetailedOpen,
+: CardsListProps): ReactElement {
   // const navigate = useNavigate();
   // const [searchParams] = useSearchParams();
 
@@ -27,29 +25,28 @@ function CardsList({
   //   }
   // }, [searchParams]);
 
-  function handleItemClick(): void {
-    if (!isDetailedOpen) {
-      setIsDetailedOpen(true);
-    }
-  }
-
-  function handleListClick(): void {
-    if (isDetailedOpen) {
-      setIsDetailedOpen(false);
-    }
-  }
+  // function handleItemClick(): void {
+  //   if (!isDetailedOpen) {
+  //     setIsDetailedOpen(true);
+  //   }
+  // }
+  //
+  // function handleListClick(): void {
+  //   if (isDetailedOpen) {
+  //     setIsDetailedOpen(false);
+  //   }
+  // }
 
   return (
-    <ul className={styles.list} onClick={handleListClick}>
-      {!isCardsDataError &&
-        cardsData.map((el) => {
-          return (
-            <li key={el.name} onClick={handleItemClick}>
-              <Card name={el.name} id={el.name} />
-            </li>
-          );
-        })}
-      {isCardsDataError && <NoInfo />}
+    <ul className={styles.list} onClick={(): void => {}}>
+      {cardsData.results.map((el) => {
+        return (
+          <li key={el.name} onClick={(): void => {}}>
+            <Card name={el.name} id={el.name} />
+          </li>
+        );
+      })}
+      {/*{isCardsDataError && <NoInfo />}*/}
     </ul>
   );
 }

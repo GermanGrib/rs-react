@@ -27,7 +27,7 @@ function SearchField(): ReactElement {
       return;
     }
     router.push({
-      pathname: 'searchResult',
+      pathname: '/searchResult',
       query: {
         searchValue: searchRefValue,
       },

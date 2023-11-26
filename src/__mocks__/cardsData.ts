@@ -1,4 +1,5 @@
-import { CardProps } from '../types/interface';
+import { PokemonGeneralResponse } from '../services/types/interface';
+import { CardProps, DetailedCardFields } from '../types/interface';
 
 export const MOCK_MAX_CARDS_ITEMS = 20;
 
@@ -14,11 +15,19 @@ export const mockCardsData: CardProps[] = Array.from(
   })
 );
 
-export const mockDetCardData = {
+export const mockDetCardData: DetailedCardFields = {
   name: 'Pikachu',
-  weight: '6.0 kg',
-  height: '0.4 m',
-  base_experience: 112,
-  types: [{ type: { name: 'Electric' } }],
+  weight: '60',
+  height: '4',
+  types: [{ type: { name: 'electric' } }],
   sprites: { front_default: 'pikachu.png' },
+  base_experience: '112',
+  id: '',
+};
+
+export const mockCardListData: { cardsData: PokemonGeneralResponse } = {
+  cardsData: {
+    results: mockCardsData,
+    count: 0,
+  },
 };

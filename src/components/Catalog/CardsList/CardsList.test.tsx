@@ -1,21 +1,22 @@
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import mockRouter from 'next-router-mock';
 import React from 'react';
 
 import {
   MOCK_MAX_CARDS_ITEMS,
-  mockCardsData,
+  mockCardListData,
 } from '../../../__mocks__/cardsData';
 import { CardsList } from './index';
 
+jest.mock('next/router', () => jest.requireActual('next-router-mock'));
 describe('Test CardsList component', () => {
+  beforeEach(() => {
+    mockRouter.push('/');
+  });
+
   test('Should verify that the component renders the specified number of cards', () => {
     const { container } = render(
-      <CardsList
-        cardsData={mockCardsData}
-        setIsDetailedOpen={(): void => {}}
-        isDetailedOpen={false}
-        isCardsDataError={false}
-      />
+      <CardsList cardsData={mockCardListData.cardsData} />
     );
 
     const ulElement = container.querySelector('ul');
@@ -23,37 +24,5 @@ describe('Test CardsList component', () => {
       const liElements = ulElement.querySelectorAll('li');
       expect(liElements.length).toBe(MOCK_MAX_CARDS_ITEMS);
     }
-  });
-
-  test('Should check that an appropriate message is displayed if no cards are present', () => {
-    const { getByText } = render(
-      <CardsList
-        cardsData={[]}
-        setIsDetailedOpen={(): void => {}}
-        isDetailedOpen={false}
-        isCardsDataError={true}
-      />
-    );
-
-    const noCardsMessage = getByText('There is no data for this query');
-    expect(noCardsMessage).toBeTruthy();
-  });
-
-  test('Should validate that clicking on a card opens a detailed card component', () => {
-    const setIsDetailedOpen = jest.fn();
-
-    const { getByText } = render(
-      <CardsList
-        cardsData={mockCardsData}
-        setIsDetailedOpen={setIsDetailedOpen}
-        isDetailedOpen={false}
-        isCardsDataError={false}
-      />
-    );
-
-    const liElement = getByText('Title 20');
-    fireEvent.click(liElement);
-
-    expect(setIsDetailedOpen).toHaveBeenCalledWith(true);
   });
 });

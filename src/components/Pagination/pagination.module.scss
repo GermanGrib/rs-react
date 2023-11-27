@@ -1,0 +1,16 @@
+@import '../../styles/common/index';
+
+.container {
+  display: flex;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  color: $primary-light;
+  font-size: 2rem;
+  transition: opacity $transition-set;
+
+  & button {
+    cursor: pointer;
+  }
+}

@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import itemsPerPageReducer from './slices/itemsPerPageSlice';
+import { getCountries } from './slices/countryAPI';
+import itemsPerPageReducer from './slices/formSlice';
 
 const store = configureStore({
   reducer: {
     itemsPerPage: itemsPerPageReducer,
+    [getCountries.reducerPath]: getCountries.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(getCountries.middleware),
 });
 
 export default store;

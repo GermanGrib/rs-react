@@ -1,0 +1,75 @@
+.wrapper {
+  position: relative;
+  max-width: 1200px;
+  object-fit: fill;
+  margin: 0 auto;
+}
+
+.bgImage {
+  position: relative;
+  width: 99%;
+  transform: scale(1.6);
+  border-radius: 220px;
+  box-sizing: border-box;
+  z-index: -1;
+}
+
+.buttonWrapper {
+  display: flex;
+  position: absolute;
+  top: 61%;
+  left: 26%;
+  gap: 250px;
+}
+
+.conrolledBtn,
+.unconrolledBtn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    filter: brightness(1.2);
+  }
+}
+
+.conrolledBtn {
+  background: linear-gradient(45deg, #912420, #ff4e50);
+}
+
+.unconrolledBtn {
+  background: linear-gradient(45deg, #1754a0, #72aef2);
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: -100% 0%;
+  }
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.button {
+  height: 45px;
+  cursor: pointer;
+  background-size: 200% 200%;
+  animation: gradientAnimation 3s ease infinite;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: filter 0.3s ease;
+}
+
+.button:hover {
+  filter: brightness(1.3);
+}

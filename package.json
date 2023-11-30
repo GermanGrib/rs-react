@@ -6,17 +6,20 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint ../../../Downloads/German --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint ../../../Downloads/German 2 --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format:fix": "prettier --write \"**/*.{html,css,scss,tsx,ts,js,jsx}\"",
     "preview": "vite preview",
     "prepare": "husky install"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.2",
     "@reduxjs/toolkit": "^1.9.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.48.2",
     "react-redux": "^8.1.3",
-    "react-router-dom": "^6.17.0"
+    "react-router-dom": "^6.17.0",
+    "yup": "^1.3.2"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.2.1",

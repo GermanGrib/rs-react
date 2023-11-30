@@ -3,7 +3,6 @@
     "target": "ESNext",
     "types": [
       "vite/client",
-      "jest",
       "node"
     ],
     "lib": [

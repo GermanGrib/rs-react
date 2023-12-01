@@ -1,11 +1,5 @@
-import { ControlledForm } from "../../components/ControlledForm.tsx"
+import { ControlledForm } from '../../components/ControlledForm.tsx';
 
-const ControlForm = () => {
-  return (
-    <>
-    <ControlledForm />
-    </>
-  )
-}
+const ControlForm = () => <ControlledForm />;
 
-export default ControlForm
+export default ControlForm;

@@ -1,8 +1,5 @@
+import { UncontrolledForm } from '../../components/UncontrolledForm';
 
-const UnControlForm = () => {
-  return (
-    <div>UnControlForm</div>
-  )
-}
+const UnControlForm = () => <UncontrolledForm />;
 
-export default UnControlForm
+export default UnControlForm;

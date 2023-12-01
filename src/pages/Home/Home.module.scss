@@ -1,25 +1,29 @@
 .wrapper {
-  position: relative;
   max-width: 1200px;
   object-fit: fill;
   margin: 0 auto;
 }
 
 .bgImage {
-  position: relative;
-  width: 99%;
-  transform: scale(1.6);
-  border-radius: 220px;
+  position: absolute;
+  width: 1700px;
+
+  border-radius: 50%;
   box-sizing: border-box;
-  z-index: -1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .buttonWrapper {
   display: flex;
   position: absolute;
-  top: 61%;
-  left: 26%;
+  top: 63%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   gap: 250px;
+  justify-content: space-between;
+  z-index: 4;
 }
 
 .conrolledBtn,
@@ -53,12 +57,6 @@
   100% {
     background-position: -100% 0%;
   }
-}
-
-.buttonWrapper {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
 }
 
 .button {

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint ../../../Downloads/German 2 --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint ../../../Downloads/German 3 --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format:fix": "prettier --write \"**/*.{html,css,scss,tsx,ts,js,jsx}\"",
     "preview": "vite preview",
     "prepare": "husky install"

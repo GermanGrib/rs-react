@@ -7,8 +7,11 @@ export const schema = yup.object().shape({
     .matches(/^[A-Z][a-z]*$/, 'Name should start with an uppercase letter'),
   age: yup
     .number()
+    .transform((value) => (isNaN(value) ? undefined : value))
+    .nullable()
     .required('Age is a required field')
     .positive('Age should be a positive'),
+
   email: yup
     .string()
     .required('Email is a required field')
@@ -24,8 +27,10 @@ export const schema = yup.object().shape({
     .string()
     .required('Please confirm your password')
     .oneOf([yup.ref('password')], 'Passwords must match'),
-  checkbox: yup.boolean(),
-  gender: yup.string(),
+  checkbox: yup
+    .boolean()
+    .oneOf([true], 'You should accept the terms and conditions'),
+  gender: yup.string().default('male'),
   picture: yup
     .mixed()
     .test('fileSize', 'File size is too large', (value) => {
@@ -44,4 +49,5 @@ export const schema = yup.object().shape({
         );
       }
     ),
+  country: yup.string().required('Country is required'),
 });

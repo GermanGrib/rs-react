@@ -10,6 +10,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 80px;
 }
 
 .form-container {
@@ -28,13 +29,15 @@ body {
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  padding-bottom: 70px;
 }
 
 .input-field {
+  position: relative;
   display: flex;
   flex-direction: column;
   margin-left: 5px;
-  margin-top: 20px;
+  margin-top: 15px;
   width: 100%;
 }
 
@@ -67,6 +70,8 @@ body {
 }
 
 .form-error {
+  position: absolute;
+  bottom: -22px;
   color: red;
   margin: 5px 0 0 0;
 }
@@ -92,8 +97,43 @@ body {
 }
 
 .disabled-btn {
-  opacity: 0.5; 
+  opacity: 0.5;
   cursor: not-allowed;
   background-color: grey;
 }
 
+.strength {
+  padding-top: 10px;
+  position: absolute;
+  bottom: -78px;
+  color: rgb(200, 0, 255);
+}
+
+.strong-message {
+  padding-top: 10px;
+  position: absolute;
+  bottom: -97px;
+  color: rgb(26, 255, 0);
+}
+
+.password-error {
+  position: absolute;
+  bottom: -60px;
+}
+
+.picture-field {
+  padding-bottom: 12px;
+}
+
+.picture-error {
+  position: absolute;
+  bottom: -12px;
+}
+
+.country-field {
+  padding-bottom: 10px;
+}
+
+.checkbox-field {
+  padding-bottom: 10px;
+}

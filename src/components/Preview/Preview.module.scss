@@ -1,0 +1,45 @@
+.wrapper {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+}
+
+.wrapperCard {
+  background-color: rgba(128, 128, 128, 0.29);
+  width: 230px;
+  padding: 15px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.image {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+}
+
+span {
+  padding: 5px 0;
+}
+
+.animation {
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    background-color: rgba(47, 104, 126, 0.493);
+  }
+  100% {
+    background-color: rgba(119, 195, 195, 0.493);
+  }
+}

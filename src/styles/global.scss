@@ -1,0 +1,139 @@
+body {
+  background-color: #080808;
+  color: white;
+  display: flex;
+  justify-content: center;
+}
+
+.form-wrapper {
+  max-width: 1200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 30px;
+  width: 700px;
+}
+
+.form-label {
+  padding: 10px 0 5px 0;
+  font-size: 20px;
+}
+
+.input-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 70px;
+}
+
+.input-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.input-field input {
+  margin-top: 5px;
+}
+
+.form-input {
+  height: 35px;
+  padding: 5px 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.form-submit {
+  color: white;
+  border: none;
+  height: 35px;
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  background: linear-gradient(45deg, #912420, #ff4e50);
+  cursor: pointer;
+  &:hover {
+    background: linear-gradient(45deg, #761e1b, #e93a3d);
+  }
+}
+
+.form-error {
+  position: absolute;
+  bottom: -22px;
+  color: red;
+  margin: 5px 0 0 0;
+}
+
+.check-box-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.checker {
+  width: 25px;
+  cursor: pointer;
+}
+
+.form-gender {
+  font-size: 20px;
+  margin: 7px;
+  cursor: pointer;
+}
+
+.disabled-btn {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: grey;
+}
+
+.strength {
+  padding-top: 10px;
+  position: absolute;
+  bottom: -78px;
+  color: rgb(200, 0, 255);
+}
+
+.strong-message {
+  padding-top: 10px;
+  position: absolute;
+  bottom: -97px;
+  color: rgb(26, 255, 0);
+}
+
+.password-error {
+  position: absolute;
+  bottom: -60px;
+}
+
+.picture-field {
+  padding-bottom: 12px;
+}
+
+.picture-error {
+  position: absolute;
+  bottom: -12px;
+}
+
+.country-field {
+  padding-bottom: 10px;
+}
+
+.checkbox-field {
+  padding-bottom: 10px;
+}
